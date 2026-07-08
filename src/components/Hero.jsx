@@ -101,7 +101,7 @@ export default function Hero() {
           </div>
 
           {/* ISO badge */}
-          <div style={{ display:'flex', alignItems:'center', gap:'1rem', marginTop:'2.5rem', animation:'fadeUp .8s ease .8s both' }}>
+          <div className="hero__badges" style={{ display:'flex', alignItems:'center', gap:'.7rem', flexWrap:'wrap', marginTop:'2.5rem', animation:'fadeUp .8s ease .8s both' }}>
             {['ISO Certified','Est. 2017','Pan India','Govt. Trusted'].map(b => (
               <span key={b} style={{ fontSize:'.65rem', fontWeight:600, letterSpacing:'.1em', textTransform:'uppercase', color:'rgba(255,255,255,.65)', padding:'.3rem .8rem', border:'1px solid rgba(255,255,255,.18)', borderRadius:4, whiteSpace:'nowrap' }}>{b}</span>
             ))}

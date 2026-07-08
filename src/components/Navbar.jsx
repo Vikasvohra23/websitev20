@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { YOUR_WA_NUMBER } from '../data/constants'
 import { WaIcon } from './Shared'
 import srLogo from '../assets/sr-logo.png'
@@ -14,15 +15,17 @@ const LINKS = [
   { label:'Contact',  id:'contact'  },
 ]
 
+// currentPage is the current pathname (e.g. '/services/foo') or null when on the homepage
 export default function Navbar({ onHome, onAbout, currentPage }) {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [active,   setActive]   = useState('home')
+  const onHomepage = !currentPage
 
   useEffect(() => {
     const onScroll = () => {
       setScrolled(window.scrollY > 50)
-      if (currentPage) return
+      if (!onHomepage) return
       for (let i = LINKS.length - 1; i >= 0; i--) {
         const el = document.getElementById(LINKS[i].id)
         if (el && window.scrollY >= el.offsetTop - 100) { setActive(LINKS[i].id); break }
@@ -31,23 +34,31 @@ export default function Navbar({ onHome, onAbout, currentPage }) {
     window.addEventListener('scroll', onScroll, { passive: true })
     onScroll()
     return () => window.removeEventListener('scroll', onScroll)
-  }, [currentPage])
+  }, [onHomepage])
 
   useEffect(() => { document.body.style.overflow = menuOpen ? 'hidden' : '' }, [menuOpen])
 
+  // For real pages (Home, About) — use router Link so crawlers get a real href.
+  // For in-page anchors (Services, Projects, Insights, FAQ, Contact) — scroll on
+  // the homepage, or navigate home first and scroll once it's mounted.
   const go = (id) => {
     setMenuOpen(false)
-    if (id === 'about' && onAbout) { onAbout(); return }
-    if (currentPage) {
-      // go back to home first, then scroll
+    if (id === 'home') { onHome(); return }
+    if (id === 'about') { onAbout(); return }
+    if (!onHomepage) {
       onHome()
-      setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior:'smooth', block:'start' }), 120)
+      setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior:'smooth', block:'start' }), 150)
       return
     }
     document.getElementById(id)?.scrollIntoView({ behavior:'smooth', block:'start' })
   }
 
-  const isActive = (id) => !currentPage && active === id
+  const isActive = (id) => onHomepage && active === id
+  const hrefFor = (id) => {
+    if (id === 'home') return '/'
+    if (id === 'about') return '/about'
+    return onHomepage ? `#${id}` : `/#${id}`
+  }
 
   return (
     <>
@@ -57,21 +68,21 @@ export default function Navbar({ onHome, onAbout, currentPage }) {
         <div className="nav__inner">
 
           {/* Brand — bigger, bolder */}
-          <div className="nav__brand" onClick={onHome} style={{ gap:'1rem' }}>
+          <Link to="/" className="nav__brand" style={{ gap:'1rem' }}>
             <img src={srLogo} alt="Shree Radhey Logo" className="nav__logo"
                  style={{ height:54, width:54, filter:'drop-shadow(0 2px 8px rgba(0,0,0,.3))' }} />
             <div className="nav__name">
               <span className="nav__name-main" style={{ fontSize:'1.1rem', letterSpacing:'.04em' }}>Shree Radhey</span>
               <span className="nav__name-sub" style={{ fontSize:'.6rem', letterSpacing:'.2em' }}>Relocation Services · Est. 2017</span>
             </div>
-          </div>
+          </Link>
 
           {/* Desktop links */}
           <ul className="nav__links" style={{ gap:'1.6rem' }}>
             {LINKS.map(l => (
               <li key={l.id}>
                 <a
-                  href={`#${l.id}`}
+                  href={hrefFor(l.id)}
                   className={isActive(l.id) ? 'active' : ''}
                   onClick={e => { e.preventDefault(); go(l.id) }}
                   style={{ fontSize:'.72rem', fontWeight:600, letterSpacing:'.1em', position:'relative' }}
@@ -111,7 +122,7 @@ export default function Navbar({ onHome, onAbout, currentPage }) {
             </div>
           </div>
           {LINKS.map((l, i) => (
-            <a key={l.id} href={`#${l.id}`}
+            <a key={l.id} href={hrefFor(l.id)}
                onClick={e => { e.preventDefault(); go(l.id) }}
                style={{ animationDelay:`${i*55}ms`, animation:'fadeUp .4s ease both', color: isActive(l.id) ? '#fff' : undefined }}>
               {l.label}

@@ -1,13 +1,14 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { ALL_SERVICES } from '../data/constants'
 import { Reveal, SectionLabel } from './Shared'
 
 // 8 service cards — 4 per row on desktop = perfect symmetry
 const SERVICE_CARDS = [
   { num:'01', slug:'industrial-relocation', title:'Industrial Plant Relocation', badge:'Specialist',    desc:'Full factory moves, heavy machinery, robots, CMM machines and production lines. Zero disassembly where possible.', tags:['Rigging','Hydraulic Jacks'],   img:'/images/service-01.jpg' },
-  { num:'02', slug:'office-relocation',     title:'Office & IT Asset Relocation',badge:'Zero Downtime', desc:'Weekend and overnight moves for corporates. 1 lakh+ IT assets relocated for WHO, WNS and Ameriprise.', tags:['Good Packing','Carefult Transit'],         img:'/images/service-02.jpg' },
-  { num:'03', slug:'household-relocation',  title:'Household Relocation',        badge:'Pan India',     desc:'Local or intercity — professional packing, safe transport, careful furniture placement. All across India.', tags:['Local','Intercity'],            img:'/images/service-03.jpg' },
-  { num:'04', slug:'export-packing',        title:'Export & International Packing',badge:'Global',      desc:'Vacuum packing, pine-wood crating, container stuffing. Exports to USA, UK, Australia, Dubai and beyond.', tags:['Vacuum Packing','ISPM-15'],    img:'/images/service-04.jpg' },
+  { num:'02', slug:'office-relocation',     title:'Office & IT Asset Relocation',badge:'Zero Downtime', desc:'Weekend and overnight moves for corporates. 1 lakh+ IT assets relocated for WHO, WNS and Ameriprise.', tags:['ESD-Safe','Overnight'],         img:'/images/service-02.jpg' },
+  { num:'03', slug:'household-relocation',  title:'Household Relocation',        badge:'Pan India',     desc:'Local or intercity — professional packing, secure transport, careful furniture placement. All across India.', tags:['Local','Intercity'],            img:'/images/service-03.jpg' },
+  { num:'04', slug:'export-packing',        title:'Export & International Packing',badge:'Global',      desc:'Vacuum packing, pine-wood crating and container stuffing. Exports to USA, UK, Australia, Dubai and beyond.', tags:['Vacuum Packing','ISPM-15'],    img:'/images/service-04.jpg' },
   { num:'05', slug:'heritage-packing',      title:'Art, Heritage & Artifacts',   badge:'Govt. Trusted', desc:'Museum-grade handling. Trusted by Rashtrapati Bhawan\'s Art Secretariat for the Presidential Museum.', tags:['White Glove','Govt. Cleared'], img:'/images/service-05.jpg' },
   { num:'06', slug:'exhibition-logistics',  title:'Exhibition & Event Logistics', badge:'Time-Critical', desc:'G20 Summit, Shilp Guru Awards, Vigyan Bhawan. Full setup, display packing and post-event dismantling.', tags:['Govt. Events','Setup'],         img:'/images/service-06.jpg' },
   { num:'07', slug:'warehousing',           title:'Warehousing & Storage',       badge:'Secure',        desc:'Short-term and long-term storage for residential, commercial and industrial goods. Monitored facilities.', tags:['Short-Term','Long-Term'],      img:'/images/service-07.jpg' },
@@ -17,9 +18,10 @@ const SERVICE_CARDS = [
 function ServiceCard({ s, onClick }) {
   const [hov, setHov] = useState(false)
   return (
-    <div
+    <Link
+      to={`/services/${s.slug}`}
       className="service-card"
-      onClick={onClick}
+      onClick={e => { e.preventDefault(); onClick() }}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
       style={{ transform: hov ? 'translateY(-6px)' : 'none', boxShadow: hov ? 'var(--shadow-xl)' : 'var(--shadow-sm)', borderColor: hov ? 'var(--sr-blue)' : 'var(--border-lt)' }}
@@ -41,7 +43,7 @@ function ServiceCard({ s, onClick }) {
           <div className="service-card__arrow" style={{ background: hov ? 'var(--sr-red)' : 'var(--sr-blue)', transform: hov ? 'translateX(3px)' : 'none' }}>→</div>
         </div>
       </div>
-    </div>
+    </Link>
   )
 }
 
@@ -66,9 +68,6 @@ export default function Services({ onServiceClick }) {
           </Reveal>
         ))}
       </div>
-
-      {/* Responsive fallback */}
-      <style>{`@media(max-width:1100px){#services .svc-sym-grid{grid-template-columns:repeat(2,1fr)!important}}@media(max-width:600px){#services .svc-sym-grid{grid-template-columns:1fr!important}}`}</style>
 
       {/* Full list toggle */}
       <Reveal delay={200}>

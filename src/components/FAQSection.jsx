@@ -1,33 +1,6 @@
 import { useState } from 'react'
-import { YOUR_WA_NUMBER } from '../data/constants'
+import { YOUR_WA_NUMBER, FAQ_DATA } from '../data/constants'
 import { Reveal, SectionLabel, WaIcon } from './Shared'
-
-const FAQ_DATA = {
-  General: [
-    { q:'How long have you been in business?',         a:'Shree Radhey Relocation Services was established in 2017. We are ISO 9001:2015 certified and have been the trusted relocation partner for WHO South-East Asia for 8 consecutive years.' },
-    { q:'Are you ISO certified?',                       a:'Yes. We hold ISO 9001:2015 certification, meaning our quality management systems, safety protocols and processes are independently audited and documented.' },
-    { q:'Do you provide a free site survey?',           a:'Yes. Free on-site surveys are available for industrial, commercial and large residential projects. This helps us provide an accurate estimate and proper project plan.' },
-    { q:'Do you serve locations outside Delhi?',        a:'Yes. We provide relocation and logistics services across India. Our transportation network covers all major cities and industrial corridors.' },
-  ],
-  Pricing: [
-    { q:'How is relocation cost calculated?',          a:'Cost depends on distance, volume, manpower, equipment required and project scope. Use our Instant Estimate calculator for household moves, or request a free site survey for commercial and industrial projects.' },
-    { q:'Do you provide transit insurance?',           a:'Yes. Transit insurance is available at 2.5% of declared value. We provide documentation from a named, verifiable insurer — not just a verbal assurance.' },
-    { q:'Do you charge for packing materials?',        a:'Packing materials are included in the quotation. We use professional-grade materials suited to each item — bubble wrap, stretch film, wooden crates, vacuum packing, LED boxes for TVs and fabric sheets for furniture.' },
-    { q:'Is a goods inventory provided?',              a:'Yes. A complete itemised inventory with photographs is provided at the packing stage, giving you full visibility of everything packed and a record for insurance purposes.' },
-  ],
-  Services: [
-    { q:'Can you relocate industrial machinery?',      a:'Yes. Industrial relocation and machine shifting are core specialities. We use 30-ton hydraulic jacks, 40-ton rollers, cranes and specialised rigging systems for complex machinery projects.' },
-    { q:'Do you handle export packing?',               a:'Yes. Vacuum packing, ISPM-15 certified wooden crating, moisture protection and container stuffing for international shipments to USA, UK, Australia, Canada, Dubai and more.' },
-    { q:'Do you handle government projects?',          a:'Yes. We have worked with Rashtrapati Bhawan, WHO South-East Asia, IRCTC, EPCH and CCIC. Government clients are welcome to request references and credentials.' },
-    { q:'Can you work weekends and night shifts?',     a:'Yes. We regularly execute projects during weekends, public holidays and overnight shifts to minimise disruption to business operations and household routines.' },
-  ],
-  Operations: [
-    { q:'Do you co-load with other customers?',        a:'No. We never co-load your consignment with another customer\'s goods. Your move gets a dedicated vehicle — a key reason goods arrive without damage or delay.' },
-    { q:'Is GPS tracking available?',                  a:'Yes. All vehicles carry GPS tracking and you can request live status updates on your consignment throughout transit.' },
-    { q:'Do you provide warehousing?',                 a:'Yes. Short-term and long-term warehousing for residential, commercial and industrial goods. Secure, monitored facilities across Delhi NCR.' },
-    { q:'Who is my point of contact during the move?', a:'You are assigned a dedicated Shifting Assistant — a single point of contact from Day 1 to final handover and feedback. No being passed between departments or teams.' },
-  ],
-}
 
 const CAT_META = {
   General:    { icon:'ℹ️',  color:'#1B3A8C' },

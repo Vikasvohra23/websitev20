@@ -1,8 +1,8 @@
 // ─── REPLACE THESE BEFORE GOING LIVE ───────────────────────
-export const YOUR_WA_NUMBER   = "+918929329666";
+export const YOUR_WA_NUMBER   = "919319571414";
 export const YOUR_EMAIL       = "sr.relocationservices@gmail.com";
 export const ADMIN_PASSWORD   = "srrs2017";
-export const RATE_PER_CFT     = 35;
+export const RATE_PER_CFT     = 60;
 
 // ─── NAV ────────────────────────────────────────────────────
 export const NAV_LINKS = ["Home","Services","About","Projects","Gallery","Estimate","Contact"];
@@ -12,10 +12,10 @@ export const CFT_ITEMS = [
   { id:"bed",          label:"Bed (Double)",        cft:100 },
   { id:"half_bed",     label:"Bed (Single)",        cft:50  },
   { id:"wardrobe",     label:"Wardrobe",            cft:60  },
-  { id:"sofa3",        label:"Sofa (3-Seater)",     cft:50  },
-  { id:"sofa2",        label:"Sofa (2-Seater)",     cft:35  },
+  { id:"sofa3",        label:"Sofa (3-Seater)",     cft:45  },
+  { id:"sofa2",        label:"Sofa (2-Seater)",     cft:30  },
   { id:"sofa1",        label:"Sofa (1-Seater)",     cft:15  },
-  { id:"center_table", label:"Center Table",        cft:15  },
+  { id:"center_table", label:"Center Table",        cft:12  },
   { id:"dining_table", label:"Dining Table",        cft:25  },
   { id:"chair",        label:"Chair",               cft:5   },
   { id:"fridge",       label:"Refrigerator",        cft:20  },
@@ -28,11 +28,11 @@ export const CFT_ITEMS = [
 
 // ─── CORE SERVICES (home section) ───────────────────────────
 export const SERVICES = [
-  { num:"01", title:"Industrial Plant Relocation",  tags:["Rigging","Risk Free","Site-to-Site"],      desc:"Full plant moves, heavy machinery, robots, CMM machines, furnaces, production lines. Vacuum packing experts with imported saw & pine wood crating." },
-  { num:"02", title:"Art, Heritage & Artifacts",    tags:["Safe Handling","Govt. Cleared","Preservation"], desc:"Museum-grade handling of paintings, sculptures, and rare artifacts. Trusted by Rashtrapati Bhawan's Art Secretariat for the Presidential Museum." },
-  { num:"03", title:"Export & International",       tags:["Vacuum Packing","Wooden Crating","Fumigation"],        desc:"Vacuum packing, export-grade wooden crating. Shipments to USA, UK, Australia, Canada, South Africa, Scandinavia and Dubai." },
-  { num:"04", title:"Corporate & IT Assets",        tags:["Smooth Transit","Expert Packing","Zero Loss"],    desc:"Large-scale office moves. 100,000+ IT assets relocated for Ameriprise, WNS, Unicharm and WHO South-East Asia." },
-  { num:"05", title:"Exhibition & Events",          tags:["Time-Critical","Govt. Events","Setup & Display"], desc:"End-to-end logistics, setup and dismantling for G20 Summit, National Handicrafts Awards at Vigyan Bhawan." },
+  { num:"01", title:"Industrial Plant Relocation",  tags:["Rigging","No-Dismantle","Site-to-Site"],      desc:"Full plant moves, heavy machinery, robots, CMM machines, furnaces, production lines. Vacuum packing experts with imported saw & pine wood crating." },
+  { num:"02", title:"Art, Heritage & Artifacts",    tags:["White Glove","Govt. Cleared","Climate-Safe"], desc:"Museum-grade handling of paintings, sculptures, and rare artifacts. Trusted by Rashtrapati Bhawan's Art Secretariat for the Presidential Museum." },
+  { num:"03", title:"Export & International",       tags:["Vacuum Packing","Risk Free","Global"],        desc:"Vacuum packing, export-grade wooden crating. Shipments to USA, UK, Australia, Canada, South Africa, Scandinavia and Dubai." },
+  { num:"04", title:"Corporate & IT Assets",        tags:["ESD-Safe","Chain of Custody","Zero Loss"],    desc:"Large-scale office moves. 100,000+ IT assets relocated for Ameriprise, WNS, Unicharm and WHO South-East Asia." },
+  { num:"05", title:"Exhibition & Events",          tags:["Time-Critical","Govt. Events","Setup & Strike"], desc:"End-to-end logistics, setup and dismantling for G20 Summit, National Handicrafts Awards at Vigyan Bhawan." },
   { num:"06", title:"Premium & Specialty Moves",    tags:["High-Value","Recurring","Precision"],         desc:"Annual packing/unpacking of the Maharaja Express — heritage items, bespoke furniture and custom fittings. Also serving premium residences and hospitality clients." },
 ];
 
@@ -248,20 +248,40 @@ export const ALL_PROJECTS = [
 ];
 
 // ─── FAQ ─────────────────────────────────────────────────────
-export const FAQS = [
-  { q:"How much does relocation cost?",              a:"Cost depends on distance, volume, manpower, equipment and scope. We provide instant estimates for household moves via our calculator, and detailed quotations after a free site survey for industrial and commercial projects." },
-  { q:"Do you provide insurance?",                   a:"Yes. Transit insurance assistance is available at 2.5% of the declared value of goods. Our team will guide you through the options during project planning." },
-  { q:"Do you provide packing materials?",           a:"Yes. We use professional-grade materials suited to each item — bubble wrap, stretch film, corrugated sheets, wooden crates, vacuum packing, LED boxes for TVs, fabric sheets for furniture." },
-  { q:"Can you relocate industrial machinery?",      a:"Yes. Industrial relocation and machine shifting are among our core specialties. We use hydraulic jacks, rollers, cranes and specialized lifting systems for complex machinery projects." },
-  { q:"Do you provide relocation outside Delhi?",    a:"Yes. We provide relocation and logistics services across India. Our transportation network covers all major cities and industrial corridors." },
-  { q:"Do you provide storage services?",            a:"Yes. Short-term and long-term warehousing solutions for residential, commercial and industrial goods." },
-  { q:"Can you work on weekends or night shifts?",   a:"Yes. We frequently execute projects during weekends, holidays and night shifts to minimize disruption to business and household routines." },
-  { q:"Do you provide export packing?",              a:"Yes. Vacuum packing, wooden crating, moisture protection and complete export packing solutions for machinery and goods destined for international shipment." },
-  { q:"Do you handle government projects?",          a:"Yes. We have worked with Rashtrapati Bhawan, WHO South-East Asia, EPCH, CCIC and IRCTC among others." },
-  { q:"Do you provide site surveys?",                a:"Yes. Free site surveys are available for industrial, commercial and large residential projects." },
-  { q:"Are you ISO certified?",                      a:"Yes. Shree Radhey Relocation Services is ISO certified. This reflects our commitment to quality management and process excellence." },
-  { q:"Do you provide a goods inventory?",           a:"Yes. We provide a full inventory of all packed items at the time of packing so you always have a complete record of your belongings." },
-];
+// ─── FAQ ─────────────────────────────────────────────────────
+// Single source of truth for FAQ content — used by both the
+// in-page accordion (FAQSection.jsx) and the homepage FAQPage
+// JSON-LD schema (injected via useDocumentHead in App.jsx) so
+// the two never drift out of sync.
+export const FAQ_DATA = {
+  General: [
+    { q:'How long have you been in business?',         a:'Shree Radhey Relocation Services was established in 2017. We are ISO 9001:2015 certified and have been the trusted relocation partner for WHO South-East Asia for 8 consecutive years.' },
+    { q:'Are you ISO certified?',                       a:'Yes. We hold ISO 9001:2015 certification, meaning our quality management systems, safety protocols and processes are independently audited and documented.' },
+    { q:'Do you provide a free site survey?',           a:'Yes. Free on-site surveys are available for industrial, commercial and large residential projects. This helps us provide an accurate estimate and proper project plan.' },
+    { q:'Do you serve locations outside Delhi?',        a:'Yes. We provide relocation and logistics services across India. Our transportation network covers all major cities and industrial corridors.' },
+  ],
+  Pricing: [
+    { q:'How is relocation cost calculated?',          a:'Cost depends on distance, volume, manpower, equipment required and project scope. Use our Instant Estimate calculator for household moves, or request a free site survey for commercial and industrial projects.' },
+    { q:'Do you provide transit insurance?',           a:'Yes. Transit insurance is available at 2.5% of declared value. We provide documentation from a named, verifiable insurer — not just a verbal assurance.' },
+    { q:'Do you charge for packing materials?',        a:'Packing materials are included in the quotation. We use professional-grade materials suited to each item — bubble wrap, stretch film, wooden crates, vacuum packing, LED boxes for TVs and fabric sheets for furniture.' },
+    { q:'Is a goods inventory provided?',              a:'Yes. A complete itemised inventory with photographs is provided at the packing stage, giving you full visibility of everything packed and a record for insurance purposes.' },
+  ],
+  Services: [
+    { q:'Can you relocate industrial machinery?',      a:'Yes. Industrial relocation and machine shifting are core specialities. We use 30-ton hydraulic jacks, 40-ton rollers, cranes and specialised rigging systems for complex machinery projects.' },
+    { q:'Do you handle export packing?',               a:'Yes. Vacuum packing, ISPM-15 certified wooden crating, moisture protection and container stuffing for international shipments to USA, UK, Australia, Canada, Dubai and more.' },
+    { q:'Do you handle government projects?',          a:'Yes. We have worked with Rashtrapati Bhawan, WHO South-East Asia, IRCTC, EPCH and CCIC. Government clients are welcome to request references and credentials.' },
+    { q:'Can you work weekends and night shifts?',     a:'Yes. We regularly execute projects during weekends, public holidays and overnight shifts to minimise disruption to business operations and household routines.' },
+  ],
+  Operations: [
+    { q:'Do you co-load with other customers?',        a:'No. We never co-load your consignment with another customer\'s goods. Your move gets a dedicated vehicle — a key reason goods arrive without damage or delay.' },
+    { q:'Is GPS tracking available?',                  a:'Yes. All vehicles carry GPS tracking and you can request live status updates on your consignment throughout transit.' },
+    { q:'Do you provide warehousing?',                 a:'Yes. Short-term and long-term warehousing for residential, commercial and industrial goods. Secure, monitored facilities across Delhi NCR.' },
+    { q:'Who is my point of contact during the move?', a:'You are assigned a dedicated Shifting Assistant — a single point of contact from Day 1 to final handover and feedback. No being passed between departments or teams.' },
+  ],
+};
+
+// Flattened list (all 16 Q&As) — convenient for JSON-LD generation
+export const FAQS = Object.values(FAQ_DATA).flat();
 
 // ─── BLOG POSTS ──────────────────────────────────────────────
 export const BLOG_POSTS = [

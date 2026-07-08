@@ -1,5 +1,6 @@
 import { Reveal, SectionLabel, WaIcon } from './Shared'
 import { YOUR_WA_NUMBER } from '../data/constants'
+import { useDocumentHead, SITE_URL } from '../hooks/useDocumentHead'
 
 const TIMELINE = [
   { year:'2017', title:'Company Founded',        desc:'Started in New Delhi with a simple mission — professional relocation with a standard the industry lacked.' },
@@ -19,6 +20,23 @@ const EQUIPMENT = [
 ]
 
 export default function AboutPage({ onBack }) {
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+      { '@type': 'ListItem', position: 2, name: 'About Us', item: `${SITE_URL}/about` },
+    ],
+  }
+
+  useDocumentHead({
+    title: 'About Us | Shree Radhey Relocation Services — 8 Years of Trust',
+    description: "ISO 9001:2015 certified relocation company in New Delhi offering household, office, industrial, export packing and logistics services across India. Founded 2017.",
+    path: '/about',
+    jsonLd: breadcrumbLd,
+    jsonLdId: 'about-page',
+  })
+
   return (
     <main className="page-enter" itemScope itemType="https://schema.org/Organization">
       {/* ── Sticky breadcrumb below nav ── */}
@@ -34,7 +52,7 @@ export default function AboutPage({ onBack }) {
       {/* ── Hero ── */}
       <div style={{ position:'relative', height:'clamp(340px,42vw,520px)', overflow:'hidden' }}>
         <img
-          src="/images/about-2.jpg"
+          src="/How%20we%20deliver/how%20we%20deliver%204.jpg"
           alt="Shree Radhey Relocation Services professional team"
           style={{ width:'100%', height:'100%', objectFit:'cover', objectPosition:'center 35%' }}
         />
@@ -87,29 +105,29 @@ export default function AboutPage({ onBack }) {
             <h2 style={{ marginTop:'.4rem' }}>A timeline of <em>milestones.</em></h2>
           </div>
         </Reveal>
-        <div style={{ position:'relative', maxWidth:800, margin:'0 auto' }}>
-          <div style={{ position:'absolute', left:'calc(50% - 1px)', top:0, bottom:0, width:2, background:'var(--border-lt)' }} />
+        <div className="timeline" style={{ position:'relative', maxWidth:800, margin:'0 auto' }}>
+          <div className="timeline__spine" style={{ position:'absolute', left:'calc(50% - 1px)', top:0, bottom:0, width:2, background:'var(--border-lt)' }} />
           {TIMELINE.map((t, i) => (
             <Reveal key={t.year} delay={i * 60}>
-              <div style={{ display:'grid', gridTemplateColumns:'1fr 48px 1fr', gap:'1rem', marginBottom:'2rem', alignItems:'start' }}>
+              <div className="timeline__row" style={{ display:'grid', gridTemplateColumns:'1fr 48px 1fr', gap:'1rem', marginBottom:'2rem', alignItems:'start' }}>
                 {i % 2 === 0
-                  ? <div style={{ textAlign:'right', paddingRight:'1.2rem', paddingTop:'.3rem' }}>
+                  ? <div className="timeline__text timeline__text--right" style={{ textAlign:'right', paddingRight:'1.2rem', paddingTop:'.3rem' }}>
                       <div style={{ fontFamily:"'Playfair Display',serif", fontWeight:700, fontSize:'1.05rem', color:'var(--txt-dark)' }}>{t.title}</div>
                       <p style={{ fontSize:'.88rem', marginTop:'.35rem' }}>{t.desc}</p>
                     </div>
-                  : <div />
+                  : <div className="timeline__spacer" />
                 }
-                <div style={{ display:'flex', flexDirection:'column', alignItems:'center' }}>
+                <div className="timeline__node" style={{ display:'flex', flexDirection:'column', alignItems:'center' }}>
                   <div style={{ width:48, height:48, borderRadius:'50%', background:'var(--sr-blue)', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, boxShadow:'0 0 0 5px var(--off-white), 0 0 0 7px var(--border-lt)', zIndex:1 }}>
                     <span style={{ fontSize:'.6rem', fontWeight:700, color:'#fff', letterSpacing:'.04em' }}>{t.year.slice(0,4)}</span>
                   </div>
                 </div>
                 {i % 2 === 1
-                  ? <div style={{ paddingLeft:'1.2rem', paddingTop:'.3rem' }}>
+                  ? <div className="timeline__text timeline__text--left" style={{ paddingLeft:'1.2rem', paddingTop:'.3rem' }}>
                       <div style={{ fontFamily:"'Playfair Display',serif", fontWeight:700, fontSize:'1.05rem', color:'var(--txt-dark)' }}>{t.title}</div>
                       <p style={{ fontSize:'.88rem', marginTop:'.35rem' }}>{t.desc}</p>
                     </div>
-                  : <div />
+                  : <div className="timeline__spacer" />
                 }
               </div>
             </Reveal>

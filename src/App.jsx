@@ -1,4 +1,5 @@
-import { useState, useEffect, useCallback } from 'react'
+import { BrowserRouter, Routes, Route, useNavigate, useLocation, useParams } from 'react-router-dom'
+import { useEffect } from 'react'
 import Navbar        from './components/Navbar'
 import Hero          from './components/Hero'
 import AboutTeaser   from './components/AboutTeaser'
@@ -17,94 +18,131 @@ import ClientSlider  from './components/ClientSlider'
 import AboutPage     from './components/AboutPage'
 import BlogDetail    from './components/BlogDetail'
 import ServiceDetail from './components/ServiceDetail'
+import NotFound      from './components/NotFound'
+import { useDocumentHead, SITE_URL } from './hooks/useDocumentHead'
+import { SERVICE_PAGES, BLOG_POSTS, FAQS } from './data/constants'
 
-// The page IDs in navigation order
+// The section IDs in navigation order (homepage in-page anchors)
 export const NAV_ORDER = ['home','about','services','projects','insights','faq','contact']
 
-export default function App() {
-  const [activePage, setActivePage]   = useState(null) // service slug
-  const [activeBlog, setActiveBlog]   = useState(null) // blog post id
-  const [showAbout,  setShowAbout]    = useState(false)
-  const [returnSection, setReturn]    = useState(null) // section to scroll back to
+const HOME_TITLE = 'Shree Radhey Relocation Services | ISO Certified Packers & Movers in Delhi'
+const HOME_DESC  = 'ISO 9001:2015 certified packers and movers in New Delhi. Industrial relocation, office shifting, household moving, export packing, machine shifting and logistics. Trusted by WHO, Rashtrapati Bhawan, IRCTC and 100+ clients since 2017.'
 
-  // Cross-blog navigation from BlogDetail
+/* ── Scrolls to top on every route change, and to an in-page
+   section when navigated home with a `scrollTo` location state ── */
+function ScrollManager() {
+  const location = useLocation()
   useEffect(() => {
-    const h = (e) => { setActiveBlog(e.detail); window.scrollTo(0,0) }
-    window.addEventListener('navigate-blog', h)
-    return () => window.removeEventListener('navigate-blog', h)
-  }, [])
-
-  const openService = useCallback((slug, fromSection = 'services') => {
-    setReturn(fromSection)
-    setActivePage(slug)
-    window.scrollTo(0,0)
-  }, [])
-
-  const openBlog = useCallback((id, fromSection = 'insights') => {
-    setReturn(fromSection)
-    setActiveBlog(id)
-    window.scrollTo(0,0)
-  }, [])
-
-  const openAbout = useCallback(() => {
-    setReturn('about')
-    setShowAbout(true)
-    window.scrollTo(0,0)
-  }, [])
-
-  const goBack = useCallback(() => {
-    const section = returnSection
-    setActivePage(null)
-    setActiveBlog(null)
-    setShowAbout(false)
-    setReturn(null)
-    // Scroll back to the section we came from
-    if (section) {
-      setTimeout(() => {
-        const el = document.getElementById(section)
-        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    const target = location.state?.scrollTo
+    if (target) {
+      // Wait a tick for the homepage to mount before scrolling
+      const t = setTimeout(() => {
+        document.getElementById(target)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
       }, 80)
+      return () => clearTimeout(t)
     }
-  }, [returnSection])
+    window.scrollTo({ top: 0 })
+  }, [location.pathname, location.state])
+  return null
+}
 
-  const goHome = useCallback(() => {
-    setActivePage(null)
-    setActiveBlog(null)
-    setShowAbout(false)
-    setReturn(null)
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }, [])
+function HomePage() {
+  const navigate = useNavigate()
 
-  // Sub-pages
-  if (showAbout) return (
-    <><Navbar onHome={goHome} onAbout={openAbout} currentPage="about" /><AboutPage onBack={goBack} /><Footer /><WaFloat /></>
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: FAQS.map(f => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  }
+
+  useDocumentHead({
+    title: HOME_TITLE,
+    description: HOME_DESC,
+    path: '/',
+    jsonLd: faqJsonLd,
+    jsonLdId: 'homepage-faq',
+  })
+
+  const openService = (slug) => navigate(`/services/${slug}`)
+  const openBlog    = (id)   => navigate(`/insights/${id}`)
+
+  return (
+    <main>
+      <Hero />
+      <ClientSlider />
+      <AboutTeaser onLearnMore={() => navigate('/about')} />
+      <PromoBanner />
+      <Services onServiceClick={openService} />
+      <SOPSection />
+      <Projects />
+      <Gallery />
+      <FAQSection />
+      <BlogSection onBlogClick={openBlog} />
+      <Calculator />
+      <Contact />
+    </main>
   )
-  if (activeBlog) return (
-    <><Navbar onHome={goHome} onAbout={openAbout} currentPage="blog" /><BlogDetail postId={activeBlog} onBack={goBack} /><Footer /><WaFloat /></>
-  )
-  if (activePage) return (
-    <><Navbar onHome={goHome} onAbout={openAbout} currentPage={activePage} /><ServiceDetail slug={activePage} onBack={goBack} /><Footer /><WaFloat /></>
-  )
+}
+
+function AboutRoute() {
+  const navigate = useNavigate()
+  return <AboutPage onBack={() => navigate('/')} />
+}
+
+function ServiceRoute() {
+  const navigate = useNavigate()
+  const { slug } = useParams()
+  if (!SERVICE_PAGES[slug]) return <NotFound />
+  return <ServiceDetail slug={slug} onBack={() => navigate('/', { state: { scrollTo: 'services' } })} />
+}
+
+function BlogRoute() {
+  const navigate = useNavigate()
+  const { postId } = useParams()
+  if (!BLOG_POSTS.find(p => p.id === postId)) return <NotFound />
+  return <BlogDetail postId={postId} onBack={() => navigate('/', { state: { scrollTo: 'insights' } })} />
+}
+
+function Layout({ children }) {
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  const goHome  = () => navigate('/')
+  const goAbout = () => navigate('/about')
+
+  // currentPage tells Navbar it's not on the homepage, so it skips
+  // in-page scroll-spying of anchor sections
+  const isHome = location.pathname === '/'
 
   return (
     <>
-      <Navbar onHome={goHome} onAbout={openAbout} currentPage={null} />
-      <main>
-        <Hero />
-        <ClientSlider />
-        <AboutTeaser onLearnMore={openAbout} />
-        <PromoBanner />
-        <Services onServiceClick={(slug) => openService(slug, 'services')} />
-        <SOPSection />
-        <Projects />
-        <Gallery />
-        <FAQSection />
-        <BlogSection onBlogClick={(id) => openBlog(id, 'insights')} />
-        <Calculator />
-        <Contact />
-      </main>
-      <Footer onAbout={openAbout} />
+      <Navbar onHome={goHome} onAbout={goAbout} currentPage={isHome ? null : location.pathname} />
+      {children}
+      <Footer />
       <WaFloat />
     </>
   )
 }
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <ScrollManager />
+      <Layout>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/about" element={<AboutRoute />} />
+          <Route path="/services/:slug" element={<ServiceRoute />} />
+          <Route path="/insights/:postId" element={<BlogRoute />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Layout>
+    </BrowserRouter>
+  )
+}
+
+export { SITE_URL }

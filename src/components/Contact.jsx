@@ -94,9 +94,9 @@ export default function Contact() {
           {/* Map image */}
           <Reveal delay={280}>
             <div style={{ borderRadius:'var(--radius)', overflow:'hidden', height:160, position:'relative' }}>
-                  <img src="/images/contact-1.jpg"
-                    alt="New Delhi location map"
-                    style={{ width:'100%', height:'100%', objectFit:'cover', filter:'saturate(.5) brightness(.6)' }} />
+              <img src="/images/contact-1.jpg"
+                   alt="New Delhi location map"
+                   style={{ width:'100%', height:'100%', objectFit:'cover', filter:'saturate(.5) brightness(.6)' }} />
               <div style={{ position:'absolute', inset:0, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:'.3rem' }}>
                 <span style={{ fontSize:'1.8rem' }}>📍</span>
                 <div style={{ textAlign:'center' }}>
@@ -120,7 +120,7 @@ export default function Contact() {
 
           <Reveal delay={80}>
             <div style={{ background:'#fff', borderRadius:'var(--radius)', padding:'clamp(1.5rem,3vw,2.2rem)', boxShadow:'var(--shadow-lg)', border:'1.5px solid var(--border-lt)' }}>
-              <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'1rem' }}>
+              <div className="contact-form-grid" style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'1rem' }}>
                 <Field ph="Full Name *"          k="name" />
                 <Field ph="Organisation / Co."   k="org"  />
                 <Field ph="Phone / WhatsApp *"   k="phone" type="tel" />
@@ -141,11 +141,11 @@ export default function Contact() {
                           rows={3} style={{ gridColumn:'1 / -1', resize:'vertical' }} />
               </div>
 
-              <div style={{ display:'grid', gridTemplateColumns:'1.5fr 1fr', gap:'.8rem', marginTop:'1.3rem' }}>
+              <div className="contact-cta-row" style={{ display:'grid', gridTemplateColumns:'1.5fr 1fr', gap:'.8rem', marginTop:'1.3rem' }}>
                 <a href={waUrl} target="_blank" rel="noopener noreferrer" className="btn btn--wa" style={{ width:'100%', gap:'.5rem' }}>
                   <WaIcon /> Send via WhatsApp
                 </a>
-                <a href={`mailto:sr.relocationservices@gmail.com?subject=Relocation Enquiry — ${form.service || 'General'}&body=Name: ${form.name}%0APhone: ${form.phone}%0AFrom: ${form.from}%0ATo: ${form.to}%0ANotes: ${form.notes}`}
+                <a href={`mailto:sr.relocationservices@gmail.com?subject=${encodeURIComponent(`Relocation Enquiry — ${form.service || 'General'}`)}&body=${encodeURIComponent(`Name: ${form.name}\nPhone: ${form.phone}\nFrom: ${form.from}\nTo: ${form.to}\nNotes: ${form.notes}`)}`}
                    className="btn btn--outline-blue" style={{ width:'100%' }}>
                   Send Email
                 </a>

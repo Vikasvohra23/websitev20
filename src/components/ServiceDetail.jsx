@@ -1,24 +1,61 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { SERVICE_PAGES } from '../data/constants'
 import { Reveal, SectionLabel, WaIcon } from './Shared'
+import { useDocumentHead, SITE_URL } from '../hooks/useDocumentHead'
 
 const SERVICE_IMAGES = {
-  'household-relocation':  'https://images.unsplash.com/photo-1521334884684-d80222895322?w=1400&q=80',
-  'office-relocation':     'https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=1400&q=80',
-  'industrial-relocation': 'https://images.unsplash.com/photo-1565043666747-69f6646db940?w=1400&q=80',
-  'machine-shifting':      'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1400&q=80',
-  'export-packing':        'https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=1400&q=80',
-  'exhibition-logistics':  'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1400&q=80',
-  'transportation':        'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=1400&q=80',
-  'warehousing':           'https://images.unsplash.com/photo-1553413077-190dd305871c?w=1400&q=80',
-  'project-logistics':     'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1400&q=80',
-  'heritage-packing':      'https://images.unsplash.com/photo-1544967082-d9d25d867d66?w=1400&q=80',
-  'premium-relocation':    'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1400&q=80',
+  'household-relocation':  '/images/service-03.jpg',
+  'office-relocation':     '/images/service-02.jpg',
+  'industrial-relocation': '/images/service-01.jpg',
+  'machine-shifting':      '/images/service-01.jpg',
+  'export-packing':        '/images/service-04.jpg',
+  'exhibition-logistics':  '/images/service-06.jpg',
+  'transportation':        '/images/service-08.jpg',
+  'warehousing':           '/images/service-07.jpg',
+  'project-logistics':     '/images/service-07.jpg',
+  'heritage-packing':      '/images/service-05.jpg',
+  'premium-relocation':    '/images/service-05.jpg',
 }
 
 export default function ServiceDetail({ slug, onBack }) {
   const page = SERVICE_PAGES[slug]
   const [tab, setTab] = useState('scope')
+  const navigate = useNavigate()
+
+  const jsonLd = page ? {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: page.title,
+    description: page.metaDesc,
+    serviceType: page.title,
+    provider: {
+      '@type': 'MovingCompany',
+      name: 'Shree Radhey Relocation Services',
+      url: SITE_URL,
+    },
+    areaServed: { '@type': 'Country', name: 'India' },
+    url: `${SITE_URL}/services/${slug}`,
+  } : null
+
+  const breadcrumbLd = page ? {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+      { '@type': 'ListItem', position: 2, name: 'Services', item: `${SITE_URL}/#services` },
+      { '@type': 'ListItem', position: 3, name: page.title, item: `${SITE_URL}/services/${slug}` },
+    ],
+  } : null
+
+  useDocumentHead({
+    title: page ? `${page.title} | Shree Radhey Relocation Services` : 'Service Not Found',
+    description: page?.metaDesc,
+    path: `/services/${slug}`,
+    jsonLd: page ? [jsonLd, breadcrumbLd] : null,
+    jsonLdId: 'service-detail',
+  })
+
   if (!page) return null
 
   const img = SERVICE_IMAGES[slug] || SERVICE_IMAGES['industrial-relocation']
@@ -51,7 +88,7 @@ export default function ServiceDetail({ slug, onBack }) {
 
       {/* ── Content + Sidebar ── */}
       <div style={{ background:'var(--off-white)' }}>
-        <div style={{ display:'grid', gridTemplateColumns:'1fr 320px', gap:'2.5rem', padding:'3rem var(--px) var(--py)', maxWidth:1200, margin:'0 auto' }}>
+        <div className="sd-layout">
 
           {/* Main content */}
           <div>
@@ -101,19 +138,19 @@ export default function ServiceDetail({ slug, onBack }) {
           </div>
 
           {/* Sticky sidebar */}
-          <div style={{ position:'sticky', top:'calc(var(--nav-h) + 16px)', alignSelf:'start' }}>
-            <div style={{ background:'#fff', borderRadius:'var(--radius)', border:'1.5px solid var(--border-lt)', boxShadow:'var(--shadow-lg)', overflow:'hidden' }}>
-              <div style={{ background:'var(--sr-blue)', padding:'1.5rem', color:'#fff' }}>
+          <div className="sd-sidebar">
+            <div className="sd-cta-box">
+              <div className="sd-cta-box__header">
                 <div style={{ fontSize:'.65rem', fontWeight:700, letterSpacing:'.18em', textTransform:'uppercase', color:'rgba(255,255,255,.65)', marginBottom:'.4rem' }}>Get Started</div>
-                <h4 style={{ color:'#fff', fontSize:'1.1rem', fontFamily:"'Playfair Display',serif" }}>Request a Free Quote</h4>
-                <p style={{ fontSize:'.82rem', color:'rgba(255,255,255,.7)', marginTop:'.3rem' }}>We respond within 1 hour.</p>
+                <h4>Request a Free Quote</h4>
+                <p>We respond within 1 hour.</p>
               </div>
-              <div style={{ padding:'1.4rem', display:'flex', flexDirection:'column', gap:'.9rem' }}>
+              <div className="sd-cta-box__body">
                 <a href={`https://wa.me/919319571414?text=${waMsg}`} target="_blank" rel="noopener noreferrer" className="btn btn--wa" style={{ width:'100%' }}>
                   <WaIcon /> WhatsApp Us Now
                 </a>
                 <button className="btn btn--outline-blue" style={{ width:'100%' }}
-                  onClick={() => { onBack(); setTimeout(() => document.getElementById('estimate')?.scrollIntoView({ behavior:'smooth' }), 120) }}>
+                  onClick={() => navigate('/', { state: { scrollTo: 'estimate' } })}>
                   Get Instant Estimate
                 </button>
                 <div style={{ padding:'1rem', background:'var(--off-white)', borderRadius:'var(--radius-sm)', fontSize:'.82rem', color:'var(--txt-body)', lineHeight:1.65 }}>

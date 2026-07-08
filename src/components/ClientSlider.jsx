@@ -27,6 +27,30 @@ const CLIENTS = [
   { name:'CoinTribe',            cat:'Fintech'      },
 ]
 
+const CLIENT_LOGOS = {
+  'WHO South-East Asia': '/Client%20Logo/WHO.png',
+  'Rashtrapati Bhawan': '/Client%20Logo/Rashtrapati_Bhavan_Logo.png',
+  'IRCTC': '/Client%20Logo/IRCTC.png',
+  'CCIC India': '/Client%20Logo/ccic.jpg',
+  'Ameriprise Financial': '/Client%20Logo/ameriprise%20f.jpg',
+  'WNS Global': '/Client%20Logo/wns.png',
+  'Samsung India': '/Client%20Logo/samsung.png',
+  'Daikin India': '/Client%20Logo/daikin.png',
+  'GKN Driveline': '/Client%20Logo/gkn.jpg',
+  'Hankook Tires': '/Client%20Logo/hankook.png',
+  'Senior India': '/Client%20Logo/senior.jpg',
+  'Yakult Danone': '/Client%20Logo/yakult.png',
+  'Hyatt Hotels': '/Client%20Logo/hyatt.png',
+  'Airtel India': '/Client%20Logo/airtel.jpg',
+  'JSW Energy': '/Client%20Logo/jsw.png',
+  'Flyjac Logistics': '/Client%20Logo/flyjack.jpg',
+  'Bando India': '/Client%20Logo/bando.jpg',
+  'Denso India': '/Client%20Logo/denso.png',
+  'CoinTribe': '/Client%20Logo/coin%20tribe.jpg',
+  'Cheil India': '/Client%20Logo/cheil.png',
+  'JTEKT India': '/Client%20Logo/jk_logo_original.png',
+}
+
 const doubled = [...CLIENTS, ...CLIENTS]
 
 export default function ClientSlider() {
@@ -43,14 +67,21 @@ export default function ClientSlider() {
 
       <div className="logo-slider">
         <div className="logo-slider__track">
-          {doubled.map((c, i) => (
-            <div key={i} className="logo-slider__item">
-              <div style={{ textAlign:'center' }}>
-                <div className="logo-slider__name">{c.name}</div>
-                <div className="logo-slider__sub">{c.cat}</div>
+          {doubled.map((c, i) => {
+            const logo = CLIENT_LOGOS[c.name]
+            return (
+              <div key={i} className="logo-slider__item">
+                <div style={{ textAlign:'center' }}>
+                  {logo ? (
+                    <img src={logo} alt={c.name} style={{ maxHeight:48, maxWidth:'100%', objectFit:'contain', margin:'0 auto 0.75rem' }} />
+                  ) : (
+                    <div className="logo-slider__name">{c.name}</div>
+                  )}
+                  <div className="logo-slider__sub">{c.cat}</div>
+                </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </div>
     </section>

@@ -3,11 +3,29 @@ import { ALL_PROJECTS, PROJECT_CATEGORIES } from '../data/constants'
 import { Reveal, SectionLabel } from './Shared'
 
 const CAT_IMAGES = {
-  government: 'https://images.unsplash.com/photo-1555374018-13a8994ab246?w=600&q=75',
-  corporate:  'https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=600&q=75',
-  industrial: 'https://images.unsplash.com/photo-1565043666747-69f6646db940?w=600&q=75',
-  luxury:     'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&q=75',
-  events:     'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600&q=75',
+  government: '/images/Corporate%20Office%20Relocation.jpg',
+  corporate:  '/images/International%20Office%20Move.jpg',
+  industrial: '/images/Industrial%20Plant%20Support.jpg',
+  luxury:     '/images/Luxury%20Train%20Interiors.jpg',
+  events:     '/images/G20%20Summit%20Exhibition.jpg',
+}
+
+const PROJECT_IMAGES = {
+  'Presidential Museum':          '/Signature%20Projects/presidential%20museum.jpg',
+  'International Office Move':    '/Signature%20Projects/International%20Office%20Move.jpg',
+  'Maharaja Express Interiors':   '/Signature%20Projects/Maharaja%20Express%20Interiors.jpg',
+  '1 Lakh IT Asset Migration':    '/Signature%20Projects/1%20Lakh%20IT%20Asset%20Migration.jpg',
+  'Corporate Office Relocation':  '/Signature%20Projects/Corporate%20Office%20Relocation.jpg',
+  'G20 Summit Exhibition':        '/Signature%20Projects/G20%20Summit%20Exhibition.jpg',
+  'Shilp Guru Awards':            '/Signature%20Projects/Shilp%20Guru%20Awards.jpeg',
+  '13-Foot Production Line':      '/Signature%20Projects/13-Foot%20Production%20Line.jpg',
+  'Air Tank Vertical Erection':   '/Signature%20Projects/Air%20Tank%20Vertical%20Erection.jpg',
+  'Equipment Handling':           '/Signature%20Projects/Equipment%20Handling.jpeg',
+  'HVAC Equipment Move':          '/Signature%20Projects/HVAC%20Equipment%20Move.jpg',
+  'Automotive Plant Support':     '/Signature%20Projects/Automotive%20Plant%20Support.jpg',
+  'Hotel Furniture Relocation':   '/Signature%20Projects/Hotel%20Furniture%20Relocation.jpg',
+  'Industrial Plant Support':     '/Signature%20Projects/Industrial%20Plant%20Support.jpg',
+  'Luxury Train Interiors':       '/Signature%20Projects/Luxury%20Train%20Interiors.jpg',
 }
 
 const TESTIMONIALS = [
@@ -23,14 +41,27 @@ function Stars({ n }) {
   return <div style={{ display:'flex', gap:2 }}>{[...Array(n)].map((_,i) => <span key={i} style={{ color:'#f5b50a', fontSize:'.95rem' }}>★</span>)}</div>
 }
 
-// Sliding carousel — 3 visible, loops continuously, 1 slides in from right each tick
+// Sliding carousel — 3/2/1 visible depending on viewport, loops continuously
 function TestimonialCarousel() {
-  const VISIBLE = 3
+  const [visibleCount, setVisibleCount] = useState(
+    typeof window !== 'undefined' && window.innerWidth <= 560 ? 1 : typeof window !== 'undefined' && window.innerWidth <= 860 ? 2 : 3
+  )
   const [startIdx, setStartIdx] = useState(0)
   const [animating, setAnimating] = useState(false)
   const [direction, setDirection] = useState('next') // 'next' | 'prev'
   const total = TESTIMONIALS.length
   const timerRef = useRef(null)
+
+  useEffect(() => {
+    const onResize = () => {
+      const next = window.innerWidth <= 560 ? 1 : window.innerWidth <= 860 ? 2 : 3
+      setVisibleCount(v => (v === next ? v : next))
+    }
+    window.addEventListener('resize', onResize, { passive: true })
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
+
+  const VISIBLE = visibleCount
 
   const advance = (dir = 'next') => {
     if (animating) return
@@ -47,31 +78,33 @@ function TestimonialCarousel() {
     return () => clearInterval(timerRef.current)
   })
 
-  // Build array of 3 visible + 1 entering/leaving
+  // Build array of VISIBLE cards starting at startIdx
   const visible = []
   for (let i = 0; i < VISIBLE; i++) {
     visible.push(TESTIMONIALS[(startIdx + i) % total])
   }
-  // The incoming card (rightmost when going next, leftmost when going prev)
-  const incoming = direction === 'next'
-    ? TESTIMONIALS[(startIdx + VISIBLE) % total]
-    : TESTIMONIALS[(startIdx - 1 + total) % total]
+
+  // The middle card glows when there are 3 visible; on 1-2 column layouts
+  // the first card is the highlighted one instead.
+  const activeIndex = VISIBLE === 3 ? 1 : 0
+  const slideFraction = 100 / VISIBLE
 
   return (
     <div>
       {/* Track with overflow hidden */}
-      <div style={{ overflow:'hidden', position:'relative' }}>
-        <div style={{
-          display:'grid',
-          gridTemplateColumns:`repeat(${VISIBLE}, 1fr)`,
-          gap:'1.4rem',
-          transition: animating ? 'transform .5s cubic-bezier(.4,0,.2,1)' : 'none',
-          transform: animating
-            ? direction === 'next' ? 'translateX(calc(-33.333% - .47rem))' : 'translateX(calc(33.333% + .47rem))'
-            : 'translateX(0)',
-        }}>
+      <div className="testi-track-wrap">
+        <div
+          className="testi-track-grid"
+          style={{
+            gridTemplateColumns: `repeat(${VISIBLE}, 1fr)`,
+            transition: animating ? 'transform .5s cubic-bezier(.4,0,.2,1)' : 'none',
+            transform: animating
+              ? direction === 'next' ? `translateX(calc(-${slideFraction}% - ${1.4 / VISIBLE}rem))` : `translateX(calc(${slideFraction}% + ${1.4 / VISIBLE}rem))`
+              : 'translateX(0)',
+          }}
+        >
           {visible.map((t, i) => {
-            const isActive = i === 1 // middle card always glows
+            const isActive = i === activeIndex
             return (
               <div key={`${t.attr}-${i}`} className="testi-card" style={{ background: isActive ? 'rgba(255,255,255,.1)' : 'rgba(255,255,255,.05)', border: isActive ? '1.5px solid rgba(201,168,76,.45)' : '1.5px solid rgba(255,255,255,.08)', boxShadow: isActive ? '0 0 0 1px rgba(201,168,76,.25), 0 0 60px rgba(201,168,76,.1), 0 20px 40px rgba(0,0,0,.3)' : 'none', transform: isActive ? 'translateY(-5px)' : 'none' }}>
                 <Stars n={t.stars} />
@@ -104,15 +137,12 @@ function TestimonialCarousel() {
           onMouseEnter={e => { e.currentTarget.style.background='var(--sr-blue)'; e.currentTarget.style.borderColor='var(--sr-blue)'; e.currentTarget.style.color='#fff' }}
           onMouseLeave={e => { e.currentTarget.style.background='rgba(255,255,255,.06)'; e.currentTarget.style.borderColor='rgba(255,255,255,.2)'; e.currentTarget.style.color='rgba(255,255,255,.7)' }}>→</button>
       </div>
-
-      {/* Mobile */}
-      <style>{`@media(max-width:700px){ .testi-card{ flex: 0 0 100% !important; } }`}</style>
     </div>
   )
 }
 
 function ProjectCard({ p }) {
-  const img = CAT_IMAGES[p.category] || CAT_IMAGES.corporate
+  const img = PROJECT_IMAGES[p.title] || CAT_IMAGES[p.category] || CAT_IMAGES.corporate
   return (
     <div className="project-card hover-float">
       <div className="project-card__img">
@@ -127,6 +157,30 @@ function ProjectCard({ p }) {
       </div>
     </div>
   )
+}
+
+const CLIENT_LOGOS = {
+  'WHO South-East Asia': '/Client%20Logo/WHO.png',
+  'Rashtrapati Bhawan': '/Client%20Logo/Rashtrapati_Bhavan_Logo.png',
+  'IRCTC': '/Client%20Logo/IRCTC.png',
+  'CCIC India': '/Client%20Logo/ccic.jpg',
+  'Ameriprise Financial': '/Client%20Logo/ameriprise%20f.jpg',
+  'WNS Global': '/Client%20Logo/wns.png',
+  'Samsung India': '/Client%20Logo/samsung.png',
+  'Daikin India': '/Client%20Logo/daikin.png',
+  'GKN Driveline': '/Client%20Logo/gkn.jpg',
+  'Hankook Tires': '/Client%20Logo/hankook.png',
+  'Senior India': '/Client%20Logo/senior.jpg',
+  'Yakult Danone': '/Client%20Logo/yakult.png',
+  'Hyatt Hotels': '/Client%20Logo/hyatt.png',
+  'Airtel India': '/Client%20Logo/airtel.jpg',
+  'JSW Energy': '/Client%20Logo/jsw.png',
+  'Flyjac Logistics': '/Client%20Logo/flyjack.jpg',
+  'Bando India': '/Client%20Logo/bando.jpg',
+  'Denso India': '/Client%20Logo/denso.png',
+  'CoinTribe': '/Client%20Logo/coin%20tribe.jpg',
+  'Cheil India': '/Client%20Logo/cheil.png',
+  'JTEKT India': '/Client%20Logo/jk_logo_original.png',
 }
 
 export default function Projects() {
@@ -170,16 +224,23 @@ export default function Projects() {
               { name:'Samsung India', cat:'Electronics' },{ name:'Daikin India', cat:'HVAC' },
               { name:'GKN Driveline', cat:'Automotive' },{ name:'Hankook Tires', cat:'Automotive' },
               { name:'Hyatt Hotels', cat:'Hospitality' },{ name:'Denso India', cat:'Automotive' },
-              { name:'Airtel', cat:'Telecom' },{ name:'JSW Energy', cat:'Energy' },
-              { name:'Yakult', cat:'FMCG' },{ name:'Sun Pharma', cat:'Pharma' },
-              { name:'Flyjac', cat:'Logistics' },{ name:'Bando India', cat:'Industrial' },
-              { name:'Senior India', cat:'Industrial' },{ name:'Unicharm', cat:'FMCG' },
-            ].map((c, i) => (
-              <div key={i} className="client-cell hover-float">
-                <div className="client-cell__name">{c.name}</div>
-                <div className="client-cell__cat">{c.cat}</div>
-              </div>
-            ))}
+              { name:'Airtel India', cat:'Telecom' },{ name:'JSW Energy', cat:'Energy' },
+              { name:'Yakult Danone', cat:'FMCG' },{ name:'Sun Pharma', cat:'Pharma' },
+              { name:'Flyjac Logistics', cat:'Logistics' },{ name:'Bando India', cat:'Industrial' },
+              { name:'Senior India', cat:'Industrial' },{ name:'Unicharm India', cat:'FMCG' },
+            ].map((c, i) => {
+              const logo = CLIENT_LOGOS[c.name]
+              return (
+                <div key={i} className="client-cell hover-float" style={{ flexDirection:'column', alignItems:'center', justifyContent:'center' }}>
+                  {logo ? (
+                    <img src={logo} alt={c.name} style={{ maxWidth:'100%', maxHeight:48, objectFit:'contain', marginBottom:'.75rem' }} />
+                  ) : (
+                    <div className="client-cell__name">{c.name}</div>
+                  )}
+                  <div className="client-cell__cat">{c.cat}</div>
+                </div>
+              )
+            })}
           </div>
         </Reveal>
       </section>

@@ -1,5 +1,7 @@
+import { Link, useNavigate } from 'react-router-dom'
 import { BLOG_POSTS, YOUR_WA_NUMBER } from '../data/constants'
 import { WaIcon } from './Shared'
+import { useDocumentHead, SITE_URL } from '../hooks/useDocumentHead'
 
 const CAT_COLORS = { 'Corporate':'#1B3A8C', 'Industrial':'#b85a10', 'Export':'#157a40', 'Consumer Guide':'#CC2229' }
 const POST_IMAGES = {
@@ -11,6 +13,38 @@ const POST_IMAGES = {
 
 export default function BlogDetail({ postId, onBack }) {
   const post = BLOG_POSTS.find(p => p.id === postId)
+  const navigate = useNavigate()
+
+  const articleLd = post ? {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: post.title,
+    description: post.excerpt,
+    image: POST_IMAGES[post.id],
+    datePublished: post.date,
+    author: { '@type': 'Organization', name: 'Shree Radhey Relocation Services', url: SITE_URL },
+    publisher: { '@type': 'Organization', name: 'Shree Radhey Relocation Services', logo: { '@type': 'ImageObject', url: `${SITE_URL}/sr-logo.png` } },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': `${SITE_URL}/insights/${postId}` },
+  } : null
+
+  const breadcrumbLd = post ? {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+      { '@type': 'ListItem', position: 2, name: 'Insights', item: `${SITE_URL}/#insights` },
+      { '@type': 'ListItem', position: 3, name: post.title, item: `${SITE_URL}/insights/${postId}` },
+    ],
+  } : null
+
+  useDocumentHead({
+    title: post ? `${post.title} | Shree Radhey Relocation Services` : 'Article Not Found',
+    description: post?.excerpt,
+    path: `/insights/${postId}`,
+    jsonLd: post ? [articleLd, breadcrumbLd] : null,
+    jsonLdId: 'blog-detail',
+  })
+
   if (!post) return null
   const col = CAT_COLORS[post.category] || '#1B3A8C'
 
@@ -76,10 +110,11 @@ export default function BlogDetail({ postId, onBack }) {
               <h4 style={{ marginBottom:'1.2rem', color:'var(--txt-dark)' }}>More Articles</h4>
               <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(min(100%,220px),1fr))', gap:'1rem' }}>
                 {BLOG_POSTS.filter(p => p.id !== postId).slice(0,3).map(p => (
-                  <div key={p.id}
-                    onClick={() => { window.scrollTo(0,0); window.dispatchEvent(new CustomEvent('navigate-blog', { detail:p.id })) }}
+                  <Link key={p.id}
+                    to={`/insights/${p.id}`}
+                    onClick={() => window.scrollTo(0,0)}
                     className="hover-float"
-                    style={{ background:'#fff', borderRadius:'var(--radius-sm)', border:'1.5px solid var(--border-lt)', cursor:'pointer', overflow:'hidden', transition:'border-color .2s' }}
+                    style={{ display:'block', background:'#fff', borderRadius:'var(--radius-sm)', border:'1.5px solid var(--border-lt)', cursor:'pointer', overflow:'hidden', transition:'border-color .2s' }}
                     onMouseEnter={e => e.currentTarget.style.borderColor='var(--sr-blue)'}
                     onMouseLeave={e => e.currentTarget.style.borderColor=''}>
                     <div style={{ height:100, overflow:'hidden' }}>
@@ -92,7 +127,7 @@ export default function BlogDetail({ postId, onBack }) {
                       <div style={{ fontFamily:"'Playfair Display',serif", fontWeight:700, fontSize:'.9rem', color:'var(--txt-dark)', lineHeight:1.3, marginBottom:'.4rem' }}>{p.title}</div>
                       <div style={{ fontSize:'.68rem', fontWeight:700, color:'var(--sr-red)', textTransform:'uppercase', letterSpacing:'.1em' }}>Read →</div>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             </div>

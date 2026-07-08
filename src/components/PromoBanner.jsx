@@ -4,7 +4,7 @@ import { WaIcon } from './Shared'
 
 const SLIDES = [
   {
-    bg: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1400&q=80',
+    bg: '/images/service-03.jpg',
     badge: 'Special Offer',
     heading: 'Stress-Free Home Shifting',
     sub: 'Professional packing, safe transport, careful placement. Free site survey for all residential bookings.',
@@ -12,7 +12,7 @@ const SLIDES = [
     msg: 'Hello! I am interested in your household relocation services. Please provide a quote.',
   },
   {
-    bg: 'https://images.unsplash.com/photo-1553413077-190dd305871c?w=1400&q=80',
+    bg: '/images/service-07.jpg',
     badge: 'Warehousing & Storage',
     heading: 'Secure Storage Solutions',
     sub: 'Short-term and long-term warehousing for residential, commercial and industrial goods. Monitored facilities across Delhi NCR.',
@@ -20,7 +20,7 @@ const SLIDES = [
     msg: 'Hello! I need warehousing/storage information. Please share details.',
   },
   {
-    bg: 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=1400&q=80',
+    bg: '/images/service-08.jpg',
     badge: 'Transportation & Logistics',
     heading: 'Pan-India Logistics Network',
     sub: 'Full truck load, part load and dedicated transport. GPS-tracked fleet for commercial goods, industrial cargo and project logistics.',

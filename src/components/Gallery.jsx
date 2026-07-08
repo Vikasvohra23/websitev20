@@ -24,15 +24,43 @@ function PlaceholderTile({ caption, category }) {
 
 /* ── Helper: Check if file is video ─────────────────────── */
 function isVideoFile(src) {
-  return src && /\.(mp4|mov)$/i.test(src)
+  // Accept files that may include Vite/webpack query hashes (e.g. .MOV?v=123)
+  return src && /\.(mp4|mov)(?:\?.*)?$/i.test(src)
 }
 
-/* ── Video Thumbnail with Preview ──────────────────────── */
-function VideoThumbnail({ src }) {
+/* ── Video Thumbnail with Preview ──────────────────────────
+   Autoplays muted + looped inline as a "live" thumbnail, per
+   iOS Safari / Android Chrome autoplay policy requirements:
+   muted + playsInline + autoPlay must all be set, and preload
+   kept light since these are off-screen until scrolled into view. ── */
+function VideoThumbnail({ src, caption }) {
+  const [failed, setFailed] = useState(false)
+
+  if (failed) {
+    return (
+      <div className="gallery-placeholder">
+        <div className="gallery-placeholder__icon">🎬</div>
+        <span style={{ fontSize:'0.65rem', textAlign:'center', lineHeight:1.4, color:'var(--muted)', opacity:0.5 }}>
+          {caption}
+        </span>
+        <span style={{ fontSize:'0.5rem', letterSpacing:'0.15em', textTransform:'uppercase', color:'var(--gold)', opacity:0.4, marginTop:4 }}>
+          Video file missing — add to public/gallery/videos/
+        </span>
+      </div>
+    )
+  }
+
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%' }}>
       <video
         src={src}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        aria-label={caption}
+        onError={() => setFailed(true)}
         style={{
           width: '100%',
           height: '100%',
@@ -47,8 +75,9 @@ function VideoThumbnail({ src }) {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: 'rgba(0,0,0,0.3)',
-        fontSize: '2.5rem'
+        background: 'rgba(0,0,0,0.18)',
+        fontSize: '2.5rem',
+        pointerEvents: 'none',
       }}>
         ▶️
       </div>
@@ -80,7 +109,7 @@ function Lightbox({ images, index, onClose, onPrev, onNext }) {
         <button className="lightbox__close" onClick={onClose} aria-label="Close">✕</button>
         <button className="lightbox__nav lightbox__nav--prev" onClick={onPrev} aria-label="Previous">‹</button>
         {isVideo ? (
-          <video src={img.src} controls muted style={{ maxWidth: '100%', maxHeight: '80vh', objectFit: 'contain' }} />
+          <video src={img.src} controls muted playsInline preload="metadata" style={{ maxWidth: '100%', maxHeight: '80vh', objectFit: 'contain' }} />
         ) : (
           <img src={img.src} alt={img.caption} />
         )}
@@ -178,7 +207,7 @@ export default function Gallery() {
               {img.src ? (
                 <>
                   {isVideoFile(img.src) ? (
-                    <VideoThumbnail src={img.src} />
+                    <VideoThumbnail src={img.src} caption={img.caption} />
                   ) : (
                     <img src={img.src} alt={img.caption} loading="lazy" />
                   )}

@@ -2,21 +2,21 @@ import { Reveal, SectionLabel } from './Shared'
 
 const STEPS = [
   { step:'01', icon:'🔍', title:'Free Site Survey',           desc:'On-site survey for every industrial, commercial and large residential project. We assess routes, floor loads and project complexity before a single rupee is quoted.',
-    img:'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=500&q=75' },
+    img:'/How%20we%20deliver/how%20we%20deliver%201.png' },
   { step:'02', icon:'📋', title:'Detailed Project Planning',  desc:'Movement sequence planned step by step. Phased schedules for corporate moves. Shutdown planning for industrial projects. Single director gives all instructions on complex lifts.',
-    img:'https://images.unsplash.com/photo-1507925921958-8a62f3d1a50d?w=500&q=75' },
+    img:'/How%20we%20deliver/how%20we%20deliver%202.png' },
   { step:'03', icon:'📦', title:'Professional Grade Packing', desc:'Bubble wrap, fabric sheets, LED boxes for TVs, VCI vacuum film for metal equipment, pine-wood crating for exports. Full goods inventory provided at packing stage.',
-    img:'https://images.unsplash.com/photo-1553413077-190dd305871c?w=500&q=75' },
+    img:'/How%20we%20deliver/how%20we%20deliver%203.jpg' },
   { step:'04', icon:'🦺', title:'Full Safety Protocol',        desc:'No crew works without PPE. Health insurance for all packing, loading and unloading personnel. Zero improvisation on complex lifts — every step is planned and supervised.',
-    img:'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=500&q=75' },
+    img:'/How%20we%20deliver/how%20we%20deliver%204.jpg' },
   { step:'05', icon:'🏗️', title:'Specialist Equipment',       desc:'30-ton hydraulic jacks, 40-ton rollers, cranes, forklifts, chain pulley blocks, rigging slings. Right equipment selected per job — never improvised.',
-    img:'https://images.unsplash.com/photo-1565043666747-69f6646db940?w=500&q=75' },
+    img:'/How%20we%20deliver/how%20we%20deliver%205.jpg' },
   { step:'06', icon:'🚚', title:'GPS-Tracked Transport',      desc:'Dedicated vehicles — no co-loading your consignment. GPS tracking live throughout transit. Time-critical deliveries managed with dedicated fleet allocation.',
-    img:'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=500&q=75' },
+    img:'/How%20we%20deliver/how%20we%20deliver%206.png' },
   { step:'07', icon:'📐', title:'Precision Placement',        desc:'Machines placed per layout drawings. Precision levelling post-relocation for CNC and precision equipment. Alignment verified before handover.',
-    img:'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=500&q=75' },
+    img:'/How%20we%20deliver/how%20we%20deliver%207.jpg' },
   { step:'08', icon:'🤝', title:'Personal Shifting Assistant', desc:'One dedicated coordinator from Day 1 to final handover. 24×7 support. Single point of contact. Feedback collected and documented at project completion.',
-    img:'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=500&q=75' },
+    img:'/How%20we%20deliver/how%20we%20deliver%208.jpg' },
 ]
 
 export default function SOPSection() {

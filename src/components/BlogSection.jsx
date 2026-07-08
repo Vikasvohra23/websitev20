@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { BLOG_POSTS } from '../data/constants'
 import { Reveal, SectionLabel } from './Shared'
 
@@ -34,13 +35,14 @@ export default function BlogSection({ onBlogClick }) {
       </Reveal>
 
       {/* Featured + 3 cards grid */}
-      <div style={{ display:'grid', gridTemplateColumns:'1.1fr 1fr', gap:'1.8rem', marginTop:'2.5rem' }}>
+      <div className="blog-two-col" style={{ display:'grid', gridTemplateColumns:'1.1fr 1fr', gap:'1.8rem', marginTop:'2.5rem' }}>
 
         {/* Featured — tall left card */}
         <Reveal>
-          <div
+          <Link
+            to={`/insights/${featured.id}`}
             className="blog-featured"
-            onClick={() => onBlogClick(featured.id)}
+            onClick={e => { e.preventDefault(); onBlogClick(featured.id) }}
             style={{ height:'100%', display:'flex', flexDirection:'column' }}
           >
             <div className="blog-featured__img" style={{ height:260 }}>
@@ -54,19 +56,20 @@ export default function BlogSection({ onBlogClick }) {
               <p className="blog-excerpt" style={{ fontSize:'.92rem' }}>{featured.excerpt}</p>
               <div className="blog-meta" style={{ marginTop:'1.2rem' }}>{featured.date} · {featured.readTime} · Read Article →</div>
             </div>
-          </div>
+          </Link>
         </Reveal>
 
         {/* Right — 3 stacked small cards */}
         <div style={{ display:'flex', flexDirection:'column', gap:'1rem' }}>
           {rest.map((post, i) => (
             <Reveal key={post.id} delay={i * 70}>
-              <div
-                className="blog-card"
-                onClick={() => onBlogClick(post.id)}
+              <Link
+                to={`/insights/${post.id}`}
+                className="blog-card blog-side-card"
+                onClick={e => { e.preventDefault(); onBlogClick(post.id) }}
                 style={{ flexDirection:'row', display:'flex', height:'auto' }}
               >
-                <div style={{ width:140, minWidth:140, height:120, overflow:'hidden', flexShrink:0 }}>
+                <div className="blog-side-card__img" style={{ width:140, minWidth:140, height:120, overflow:'hidden', flexShrink:0 }}>
                   <img
                     src={POST_IMAGES[post.id]}
                     alt={post.title}
@@ -81,20 +84,11 @@ export default function BlogSection({ onBlogClick }) {
                   <h4 className="blog-title" style={{ fontSize:'.95rem', margin:'.4rem 0 .4rem' }}>{post.title}</h4>
                   <div className="blog-meta">{post.readTime} →</div>
                 </div>
-              </div>
+              </Link>
             </Reveal>
           ))}
         </div>
       </div>
-
-      {/* Mobile: all cards stacked */}
-      <style>{`
-        @media(max-width:700px){
-          #insights .blog-two-col { grid-template-columns: 1fr !important; }
-          #insights .blog-side-card { flex-direction: column !important; }
-          #insights .blog-side-card > div:first-child { width: 100% !important; min-width: unset !important; height: 180px !important; }
-        }
-      `}</style>
     </section>
   )
 }

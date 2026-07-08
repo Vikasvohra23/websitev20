@@ -1,5 +1,6 @@
+import { Link, useNavigate } from 'react-router-dom'
 import srLogo from '../assets/sr-logo.png'
-import { YOUR_WA_NUMBER, YOUR_EMAIL } from '../data/constants'
+import { YOUR_WA_NUMBER, YOUR_EMAIL, SERVICE_PAGES } from '../data/constants'
 import { WaIcon } from './Shared'
 
 const SERVICE_LINKS = [
@@ -14,13 +15,27 @@ const SERVICE_LINKS = [
   ['Project Logistics','project-logistics'],
 ]
 
-const QUICK_LINKS = ['Home','Services','About','Projects','Gallery','Estimate','Contact']
+// label, target anchor id (scrolled to on homepage) — Home/About handled separately as real routes
+const QUICK_LINKS = [
+  ['Services','services'],
+  ['Projects','projects'],
+  ['Gallery','gallery'],
+  ['Estimate','estimate'],
+  ['Contact','contact'],
+]
 
 export default function Footer({ onAbout }) {
   const y = new Date().getFullYear()
+  const navigate = useNavigate()
+
   const scrollTo = (id) => {
-    if (id === 'about' && onAbout) { onAbout(); return }
-    document.getElementById(id.toLowerCase())?.scrollIntoView({ behavior:'smooth' })
+    // Always route home first with scroll intent — works whether we're
+    // already on the homepage (just scrolls) or on a sub-page (navigates then scrolls).
+    if (window.location.pathname === '/') {
+      document.getElementById(id)?.scrollIntoView({ behavior:'smooth' })
+    } else {
+      navigate('/', { state: { scrollTo: id } })
+    }
   }
 
   return (
@@ -51,16 +66,16 @@ export default function Footer({ onAbout }) {
             </div>
           </div>
 
-          {/* Services */}
+          {/* Services — real links to each service page (also helps internal SEO linking) */}
           <div>
             <div style={{ fontSize:'.62rem', fontWeight:700, letterSpacing:'.26em', textTransform:'uppercase', color:'var(--sr-red)', marginBottom:'1rem', paddingBottom:'.5rem', borderBottom:'1px solid rgba(255,255,255,.06)' }}>Services</div>
             <ul style={{ listStyle:'none', display:'flex', flexDirection:'column', gap:'.45rem' }}>
-              {SERVICE_LINKS.map(([label]) => (
+              {SERVICE_LINKS.map(([label, slug]) => (
                 <li key={label}>
-                  <a href="#services" onClick={e => { e.preventDefault(); scrollTo('services') }}
+                  <Link to={SERVICE_PAGES[slug] ? `/services/${slug}` : '/'}
                      style={{ fontSize:'.85rem', color:'rgba(255,255,255,.5)', transition:'color .2s' }}
                      onMouseEnter={e => e.target.style.color='#fff'}
-                     onMouseLeave={e => e.target.style.color='rgba(255,255,255,.5)'}>{label}</a>
+                     onMouseLeave={e => e.target.style.color='rgba(255,255,255,.5)'}>{label}</Link>
                 </li>
               ))}
             </ul>
@@ -70,9 +85,19 @@ export default function Footer({ onAbout }) {
           <div>
             <div style={{ fontSize:'.62rem', fontWeight:700, letterSpacing:'.26em', textTransform:'uppercase', color:'var(--sr-red)', marginBottom:'1rem', paddingBottom:'.5rem', borderBottom:'1px solid rgba(255,255,255,.06)' }}>Quick Links</div>
             <ul style={{ listStyle:'none', display:'flex', flexDirection:'column', gap:'.45rem' }}>
-              {QUICK_LINKS.map(l => (
+              <li>
+                <Link to="/" style={{ fontSize:'.85rem', color:'rgba(255,255,255,.5)', transition:'color .2s' }}
+                   onMouseEnter={e => e.target.style.color='#fff'}
+                   onMouseLeave={e => e.target.style.color='rgba(255,255,255,.5)'}>Home</Link>
+              </li>
+              <li>
+                <Link to="/about" style={{ fontSize:'.85rem', color:'rgba(255,255,255,.5)', transition:'color .2s' }}
+                   onMouseEnter={e => e.target.style.color='#fff'}
+                   onMouseLeave={e => e.target.style.color='rgba(255,255,255,.5)'}>About</Link>
+              </li>
+              {QUICK_LINKS.map(([l, id]) => (
                 <li key={l}>
-                  <a href={`#${l.toLowerCase()}`} onClick={e => { e.preventDefault(); scrollTo(l.toLowerCase()) }}
+                  <a href={`/#${id}`} onClick={e => { e.preventDefault(); scrollTo(id) }}
                      style={{ fontSize:'.85rem', color:'rgba(255,255,255,.5)', transition:'color .2s' }}
                      onMouseEnter={e => e.target.style.color='#fff'}
                      onMouseLeave={e => e.target.style.color='rgba(255,255,255,.5)'}>{l}</a>
