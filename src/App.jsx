@@ -17,10 +17,13 @@ import WaFloat       from './components/WaFloat'
 import ClientSlider  from './components/ClientSlider'
 import AboutPage     from './components/AboutPage'
 import BlogDetail    from './components/BlogDetail'
-import ServiceDetail from './components/ServiceDetail'
-import NotFound      from './components/NotFound'
+import ServiceDetail   from './components/ServiceDetail'
+import ProjectDetail   from './components/ProjectDetail'
+import LocationLanding from './components/LocationLanding'
+import NotFound        from './components/NotFound'
 import { useDocumentHead, SITE_URL } from './hooks/useDocumentHead'
 import { SERVICE_PAGES, BLOG_POSTS, FAQS } from './data/constants'
+import { LOCATION_PAGES } from './data/locationPages'
 
 // The section IDs in navigation order (homepage in-page anchors)
 export const NAV_ORDER = ['home','about','services','projects','insights','faq','contact']
@@ -90,7 +93,7 @@ function HomePage() {
 
 function AboutRoute() {
   const navigate = useNavigate()
-  return <AboutPage onBack={() => navigate('/')} />
+  return <AboutPage onBack={() => navigate('/', { state: { scrollTo: 'about' } })} />
 }
 
 function ServiceRoute() {
@@ -98,6 +101,19 @@ function ServiceRoute() {
   const { slug } = useParams()
   if (!SERVICE_PAGES[slug]) return <NotFound />
   return <ServiceDetail slug={slug} onBack={() => navigate('/', { state: { scrollTo: 'services' } })} />
+}
+
+function ProjectRoute() {
+  const navigate = useNavigate()
+  const { slug } = useParams()
+  return <ProjectDetail slug={slug} onBack={() => navigate('/', { state: { scrollTo: 'projects' } })} />
+}
+
+function LocationRoute() {
+  const { slug } = useParams()
+  const page = LOCATION_PAGES[slug]
+  if (!page) return <NotFound />
+  return <LocationLanding slug={slug} location={page.name} />
 }
 
 function BlogRoute() {
@@ -137,6 +153,8 @@ export default function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<AboutRoute />} />
           <Route path="/services/:slug" element={<ServiceRoute />} />
+          <Route path="/projects/:slug" element={<ProjectRoute />} />
+          <Route path="/industrial-relocation/:slug" element={<LocationRoute />} />
           <Route path="/insights/:postId" element={<BlogRoute />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

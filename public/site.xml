@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Duplicate of sitemap.xml to support crawlers expecting site.xml -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://www.srrelocationservices.com/</loc>
+    <lastmod>2026-07-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.00</priority>
+  </url>
+  <url>
+    <loc>https://www.srrelocationservices.com/about</loc>
+    <lastmod>2026-07-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+  <!-- Services and blog entries mirrored from sitemap.xml -->
+  <url>
+    <loc>https://www.srrelocationservices.com/services/household-relocation</loc>
+    <lastmod>2026-07-10</lastmod>
+  </url>
+  <url>
+    <loc>https://www.srrelocationservices.com/services/office-relocation</loc>
+    <lastmod>2026-07-10</lastmod>
+  </url>
+  <url>
+    <loc>https://www.srrelocationservices.com/services/industrial-relocation</loc>
+    <lastmod>2026-07-10</lastmod>
+  </url>
+  <url>
+    <loc>https://www.srrelocationservices.com/services/machine-shifting</loc>
+    <lastmod>2026-07-10</lastmod>
+  </url>
+  <url>
+    <loc>https://www.srrelocationservices.com/insights/office-relocation-guide</loc>
+    <lastmod>2026-07-10</lastmod>
+  </url>
+  <url>
+    <loc>https://www.srrelocationservices.com/insights/machine-shifting-guide</loc>
+    <lastmod>2026-07-10</lastmod>
+  </url>
+</urlset>

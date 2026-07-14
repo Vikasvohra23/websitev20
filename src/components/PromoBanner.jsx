@@ -42,7 +42,7 @@ export default function PromoBanner() {
   const s = SLIDES[cur]
 
   return (
-    <div style={{ position:'relative', height:'clamp(300px,38vw,520px)', overflow:'hidden' }}>
+    <div className="promo-banner">
       {/* Slides */}
       {SLIDES.map((sl, i) => (
         <div key={i} style={{
@@ -58,7 +58,7 @@ export default function PromoBanner() {
       <div style={{ position:'absolute', inset:0, background:'linear-gradient(105deg,rgba(8,15,36,.82) 0%,rgba(8,15,36,.45) 60%,rgba(8,15,36,.2) 100%)' }} />
 
       {/* Content */}
-      <div style={{ position:'absolute', inset:0, display:'flex', flexDirection:'column', justifyContent:'center', padding:'0 var(--px)', maxWidth:700, zIndex:2 }}>
+      <div className="hero__content promo-banner__content">
         <div style={{ display:'inline-flex', alignItems:'center', gap:8, marginBottom:'1rem' }}>
           <span style={{ background:'var(--sr-red)', color:'#fff', fontSize:'.62rem', fontWeight:700, letterSpacing:'.16em', textTransform:'uppercase', padding:'.28rem .85rem', borderRadius:4 }}>
             {s.badge}
@@ -67,10 +67,10 @@ export default function PromoBanner() {
         <h2 style={{ fontFamily:"'Playfair Display',serif", fontWeight:700, fontSize:'clamp(1.8rem,4vw,3rem)', color:'#fff', lineHeight:1.12, animation:'fadeUp .6s ease both' }} key={`h-${cur}`}>
           {s.heading}
         </h2>
-        <p style={{ marginTop:'.9rem', fontSize:'clamp(.95rem,1.8vw,1.05rem)', color:'rgba(255,255,255,.78)', maxWidth:480, lineHeight:1.75, animation:'fadeUp .6s ease .12s both' }} key={`p-${cur}`}>
+        <p style={{ fontSize:'clamp(.95rem,1.8vw,1.05rem)', color:'rgba(255,255,255,.78)', maxWidth:480, lineHeight:1.75, animation:'fadeUp .6s ease .12s both' }} key={`p-${cur}`}>
           {s.sub}
         </p>
-        <div style={{ display:'flex', gap:'.9rem', flexWrap:'wrap', marginTop:'1.8rem', animation:'fadeUp .6s ease .22s both' }} key={`c-${cur}`}>
+        <div className="hero__ctas promo-banner__ctas" style={{ animation:'fadeUp .6s ease .22s both' }} key={`c-${cur}`}>
           <a href={`https://wa.me/${YOUR_WA_NUMBER}?text=${encodeURIComponent(s.msg)}`}
              target="_blank" rel="noopener noreferrer"
              className="btn btn--red btn--lg" style={{ gap:'.5rem' }}>
@@ -81,13 +81,13 @@ export default function PromoBanner() {
       </div>
 
       {/* Arrows */}
-      <button onClick={prev} style={{ position:'absolute', left:'1.5rem', top:'50%', transform:'translateY(-50%)', zIndex:3, width:44, height:44, borderRadius:'50%', border:'2px solid rgba(255,255,255,.3)', background:'rgba(8,15,36,.4)', backdropFilter:'blur(8px)', color:'#fff', fontSize:'1rem', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', transition:'all .2s' }}
+      <button className="hero__arrow hero__arrow--prev" onClick={prev} style={{ position:'absolute', left:'1.5rem', top:'50%', transform:'translateY(-50%)', zIndex:3, width:44, height:44, borderRadius:'50%', border:'2px solid rgba(255,255,255,.3)', background:'rgba(8,15,36,.4)', backdropFilter:'blur(8px)', color:'#fff', fontSize:'1rem', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', transition:'all .2s' }}
            onMouseEnter={e => e.currentTarget.style.background='var(--sr-blue)'} onMouseLeave={e => e.currentTarget.style.background='rgba(8,15,36,.4)'}>←</button>
-      <button onClick={next} style={{ position:'absolute', right:'1.5rem', top:'50%', transform:'translateY(-50%)', zIndex:3, width:44, height:44, borderRadius:'50%', border:'2px solid rgba(255,255,255,.3)', background:'rgba(8,15,36,.4)', backdropFilter:'blur(8px)', color:'#fff', fontSize:'1rem', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', transition:'all .2s' }}
+      <button className="hero__arrow hero__arrow--next" onClick={next} style={{ position:'absolute', right:'1.5rem', top:'50%', transform:'translateY(-50%)', zIndex:3, width:44, height:44, borderRadius:'50%', border:'2px solid rgba(255,255,255,.3)', background:'rgba(8,15,36,.4)', backdropFilter:'blur(8px)', color:'#fff', fontSize:'1rem', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', transition:'all .2s' }}
            onMouseEnter={e => e.currentTarget.style.background='var(--sr-blue)'} onMouseLeave={e => e.currentTarget.style.background='rgba(8,15,36,.4)'}>→</button>
 
       {/* Dots */}
-      <div style={{ position:'absolute', bottom:'1.5rem', left:'50%', transform:'translateX(-50%)', zIndex:3, display:'flex', gap:8 }}>
+      <div className="hero__dots promo-banner__dots">
         {SLIDES.map((_, i) => (
           <button key={i} onClick={() => setCur(i)} style={{ width: i === cur ? 40 : 24, height:4, borderRadius:2, border:'none', background: i === cur ? '#fff' : 'rgba(255,255,255,.35)', cursor:'pointer', transition:'all .35s', padding:0 }} />
         ))}

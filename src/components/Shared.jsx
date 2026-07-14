@@ -1,4 +1,19 @@
+import { Link } from 'react-router-dom'
 import { useInView } from '../hooks/useInView'
+
+// BreadcrumbBar — premium sub-nav: circular back-arrow chip + Home / Section trail
+export function BreadcrumbBar({ label, onBack }) {
+  return (
+    <div className="breadcrumb-bar">
+      <button className="breadcrumb-arrow" onClick={onBack} aria-label={`Back to ${label}`}>←</button>
+      <nav className="breadcrumb-trail" aria-label="Breadcrumb">
+        <Link to="/" className="breadcrumb-trail__link">Home</Link>
+        <span className="breadcrumb-trail__sep">/</span>
+        <span className="breadcrumb-trail__current">{label}</span>
+      </nav>
+    </div>
+  )
+}
 
 // Reveal — fade+rise on scroll, with optional delay and direction
 export function Reveal({ children, delay = 0, style = {}, from = 'bottom' }) {

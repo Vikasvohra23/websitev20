@@ -15,21 +15,18 @@ const SERVICE_CARDS = [
   { num:'08', slug:'transportation',        title:'Car & Bike Relocation',       badge:'Pan India',     desc:'Fully enclosed car carriers and bike transport across India. GPS tracked, insured, door-to-door service.', tags:['Enclosed Carrier','GPS'],      img:'/images/service-08.jpg' },
 ]
 
-function ServiceCard({ s, onClick }) {
-  const [hov, setHov] = useState(false)
+function ServiceCard({ s, onClick, onImgClick }) {
   return (
     <Link
       to={`/services/${s.slug}`}
-      className="service-card"
+      className="service-card service-card--lift"
       onClick={e => { e.preventDefault(); onClick() }}
-      onMouseEnter={() => setHov(true)}
-      onMouseLeave={() => setHov(false)}
-      style={{ transform: hov ? 'translateY(-6px)' : 'none', boxShadow: hov ? 'var(--shadow-xl)' : 'var(--shadow-sm)', borderColor: hov ? 'var(--sr-blue)' : 'var(--border-lt)' }}
     >
-      <div className="service-card__img-wrap">
-        <img src={s.img} alt={s.title} className="service-card__img" loading="lazy" style={{ transform: hov ? 'scale(1.08)' : 'scale(1)' }} />
+      <div className="service-card__img-wrap" onClick={e => { e.preventDefault(); e.stopPropagation(); onImgClick(s) }}>
+        <img src={s.img} alt={s.title} className="service-card__img" loading="lazy" />
         <div className="service-card__img-overlay" />
         <span className="service-card__badge">{s.badge}</span>
+        <span className="service-card__zoom" aria-hidden="true">⤢</span>
       </div>
       <div className="service-card__body">
         <div className="service-card__num">{s.num} ——</div>
@@ -40,15 +37,28 @@ function ServiceCard({ s, onClick }) {
         </div>
         <div className="service-card__cta">
           <span className="service-card__link">View Service</span>
-          <div className="service-card__arrow" style={{ background: hov ? 'var(--sr-red)' : 'var(--sr-blue)', transform: hov ? 'translateX(3px)' : 'none' }}>→</div>
+          <div className="service-card__arrow">→</div>
         </div>
       </div>
     </Link>
   )
 }
 
+/* Full-screen accessible lightbox for a single service image */
+function ServiceLightbox({ s, onClose }) {
+  if (!s) return null
+  return (
+    <div className="lightbox-overlay" role="dialog" aria-modal="true" aria-label={s.title} onClick={onClose}>
+      <button className="lightbox-close" onClick={onClose} aria-label="Close">✕</button>
+      <img src={s.img} alt={s.title} className="lightbox-img" onClick={e => e.stopPropagation()} />
+      <div className="lightbox-caption">{s.title}</div>
+    </div>
+  )
+}
+
 export default function Services({ onServiceClick }) {
   const [expanded, setExpanded] = useState(false)
+  const [lightbox, setLightbox] = useState(null)
 
   return (
     <section id="services" className="section sec-white">
@@ -64,10 +74,11 @@ export default function Services({ onServiceClick }) {
       <div className="services-4col" style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:'1.5rem', marginTop:'3rem' }}>
         {SERVICE_CARDS.map((s, i) => (
           <Reveal key={s.num} delay={i * 50}>
-            <ServiceCard s={s} onClick={() => onServiceClick(s.slug)} />
+            <ServiceCard s={s} onClick={() => onServiceClick(s.slug)} onImgClick={setLightbox} />
           </Reveal>
         ))}
       </div>
+      <ServiceLightbox s={lightbox} onClose={() => setLightbox(null)} />
 
       {/* Full list toggle */}
       <Reveal delay={200}>

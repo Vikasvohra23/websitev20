@@ -11,7 +11,7 @@ export default function About() {
           <div className="about-teaser__img">
             <img
               src="/images/about-1.jpg"
-              alt="SR Relocation team at work — industrial machinery handling"
+              alt="SR Relocation team at work - industrial machinery handling"
             />
             <div className="about-teaser__img-overlay" />
           </div>
@@ -25,10 +25,10 @@ export default function About() {
 
             <Reveal delay={140}>
               <blockquote className="about-quote">
-                "We don't just transport your goods — we move them with your feelings intact, so wherever you go, you always feel the same."
+                "We don't just transport your goods - we move them with your feelings intact, so wherever you go, you always feel the same."
               </blockquote>
               <p style={{ fontSize:'.78rem', fontWeight:600, letterSpacing:'.1em', textTransform:'uppercase', color:'var(--sr-blue)', marginBottom:'1.2rem' }}>
-                — Sanjeev Vohra, Head of Operations
+                - Sanjeev Vohra, Head of Operations
               </p>
             </Reveal>
 
@@ -72,7 +72,7 @@ export default function About() {
           { n:'2017', l:'Founded' },
           { n:'100+', l:'Industrial Clients' },
           { n:'1L+',  l:'IT Assets Relocated' },
-          { n:'8+',   l:'Years of Trust' },
+          { n:'9+',   l:'Years of Trust' },
         ].map(s => (
           <div key={s.l} className="stat-box">
             <div className="stat-box__n">{s.n}</div>

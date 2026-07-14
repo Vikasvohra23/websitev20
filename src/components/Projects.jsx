@@ -1,6 +1,9 @@
+import { Link } from 'react-router-dom'
 import { useState, useEffect, useRef } from 'react'
 import { ALL_PROJECTS, PROJECT_CATEGORIES } from '../data/constants'
 import { Reveal, SectionLabel } from './Shared'
+
+export const slugifyProject = (title) => title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
 
 const CAT_IMAGES = {
   government: '/images/Corporate%20Office%20Relocation.jpg',
@@ -144,7 +147,7 @@ function TestimonialCarousel() {
 function ProjectCard({ p }) {
   const img = PROJECT_IMAGES[p.title] || CAT_IMAGES[p.category] || CAT_IMAGES.corporate
   return (
-    <div className="project-card hover-float">
+    <Link to={`/projects/${slugifyProject(p.title)}`} className="project-card project-card--lift">
       <div className="project-card__img">
         <img src={img} alt={p.title} loading="lazy" />
         <span className="project-card__cat">{p.tag}</span>
@@ -153,9 +156,12 @@ function ProjectCard({ p }) {
         <div className="project-card__client">{p.client}</div>
         <h4 className="project-card__title">{p.title}</h4>
         <p className="project-card__desc">{p.desc}</p>
-        <div style={{ fontSize:'.68rem', fontWeight:600, letterSpacing:'.1em', textTransform:'uppercase', color:'var(--txt-muted)', marginTop:'.8rem' }}>{p.year}</div>
+        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginTop:'.8rem' }}>
+          <span style={{ fontSize:'.68rem', fontWeight:600, letterSpacing:'.1em', textTransform:'uppercase', color:'var(--txt-muted)' }}>{p.year}</span>
+          <span className="project-card__arrow">→</span>
+        </div>
       </div>
-    </div>
+    </Link>
   )
 }
 
@@ -181,6 +187,9 @@ const CLIENT_LOGOS = {
   'CoinTribe': '/Client%20Logo/coin%20tribe.jpg',
   'Cheil India': '/Client%20Logo/cheil.png',
   'JTEKT India': '/Client%20Logo/jk_logo_original.png',
+  'Takahata Precision': '/Client%20Logo/takahata.png',
+  'Sun Pharma': '/Client%20Logo/Sun%20Pharma.png',
+  'Unicharm India': '/Client%20Logo/unicharm.png',
 }
 
 export default function Projects() {

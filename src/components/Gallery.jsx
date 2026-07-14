@@ -60,6 +60,7 @@ function VideoThumbnail({ src, caption }) {
         playsInline
         preload="metadata"
         aria-label={caption}
+        title={caption}
         onError={() => setFailed(true)}
         style={{
           width: '100%',
@@ -209,7 +210,7 @@ export default function Gallery() {
                   {isVideoFile(img.src) ? (
                     <VideoThumbnail src={img.src} caption={img.caption} />
                   ) : (
-                    <img src={img.src} alt={img.caption} loading="lazy" />
+                    <img src={img.src} alt={img.caption} title={img.caption} loading="lazy" />
                   )}
                   <div className="gallery-item__overlay">
                     <span className="gallery-item__caption">{img.caption}</span>

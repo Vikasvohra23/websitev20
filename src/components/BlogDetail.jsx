@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { BLOG_POSTS, YOUR_WA_NUMBER } from '../data/constants'
-import { WaIcon } from './Shared'
+import { WaIcon, BreadcrumbBar } from './Shared'
 import { useDocumentHead, SITE_URL } from '../hooks/useDocumentHead'
 
 const CAT_COLORS = { 'Corporate':'#1B3A8C', 'Industrial':'#b85a10', 'Export':'#157a40', 'Consumer Guide':'#CC2229' }
@@ -51,9 +51,7 @@ export default function BlogDetail({ postId, onBack }) {
   return (
     <main className="page-enter" itemScope itemType="https://schema.org/Article">
       {/* ── Sticky breadcrumb below nav ── */}
-      <div className="breadcrumb-bar">
-        <button className="breadcrumb-btn" onClick={onBack}>Back to Insights</button>
-      </div>
+      <BreadcrumbBar label="Insights" onBack={onBack} />
 
       {/* ── SEO ── */}
       <span className="seo-text" itemProp="headline">{post.title}</span>

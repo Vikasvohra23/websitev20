@@ -56,7 +56,7 @@ export default function FAQSection() {
           </Reveal>
 
           {/* Category tabs */}
-          <div style={{ display:'flex', flexDirection:'column', gap:'.5rem', marginTop:'1.6rem' }}>
+          <div className="faq-cats" style={{ display:'flex', flexDirection:'column', gap:'.5rem', marginTop:'1.6rem' }}>
             {Object.entries(CAT_META).map(([cat, meta]) => (
               <button key={cat} onClick={() => { setActiveCat(cat); setOpenIdx(0) }}
                 style={{
@@ -86,7 +86,7 @@ export default function FAQSection() {
         </div>
 
         {/* RIGHT — accordion — always full of content, no blank space */}
-        <div>
+        <div className="faq-panel">
           <div style={{ fontSize:'.72rem', fontWeight:700, letterSpacing:'.2em', textTransform:'uppercase', color: CAT_META[activeCat].color, marginBottom:'1.4rem', display:'flex', alignItems:'center', gap:'.5rem' }}>
             <span>{CAT_META[activeCat].icon}</span> {activeCat} Questions
           </div>

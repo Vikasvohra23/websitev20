@@ -1,4 +1,4 @@
-import { Reveal, SectionLabel, WaIcon } from './Shared'
+import { Reveal, SectionLabel, WaIcon, BreadcrumbBar } from './Shared'
 import { YOUR_WA_NUMBER } from '../data/constants'
 import { useDocumentHead, SITE_URL } from '../hooks/useDocumentHead'
 
@@ -40,9 +40,7 @@ export default function AboutPage({ onBack }) {
   return (
     <main className="page-enter" itemScope itemType="https://schema.org/Organization">
       {/* ── Sticky breadcrumb below nav ── */}
-      <div className="breadcrumb-bar">
-        <button className="breadcrumb-btn" onClick={onBack}>Back to About</button>
-      </div>
+      <BreadcrumbBar label="About Us" onBack={onBack} />
 
       {/* ── SEO hidden org data ── */}
       <span className="seo-text" itemProp="name">Shree Radhey Relocation Services</span>

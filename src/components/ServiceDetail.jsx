@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { SERVICE_PAGES } from '../data/constants'
-import { Reveal, SectionLabel, WaIcon } from './Shared'
+import { Reveal, SectionLabel, WaIcon, BreadcrumbBar } from './Shared'
 import { useDocumentHead, SITE_URL } from '../hooks/useDocumentHead'
 
 const SERVICE_IMAGES = {
@@ -64,9 +64,7 @@ export default function ServiceDetail({ slug, onBack }) {
   return (
     <main className="page-enter" itemScope itemType="https://schema.org/Service">
       {/* ── Sticky breadcrumb — always below fixed nav ── */}
-      <div className="breadcrumb-bar">
-        <button className="breadcrumb-btn" onClick={onBack}>Back to Services</button>
-      </div>
+      <BreadcrumbBar label="Services" onBack={onBack} />
 
       {/* ── SEO ── */}
       <span className="seo-text" itemProp="name">{page.title}</span>

@@ -49,6 +49,9 @@ const CLIENT_LOGOS = {
   'CoinTribe': '/Client%20Logo/coin%20tribe.jpg',
   'Cheil India': '/Client%20Logo/cheil.png',
   'JTEKT India': '/Client%20Logo/jk_logo_original.png',
+  'Takahata Precision': '/Client%20Logo/takahata.png',
+  'Sun Pharma': '/Client%20Logo/Sun%20Pharma.png',
+  'Unicharm India': '/Client%20Logo/unicharm.png',
 }
 
 const doubled = [...CLIENTS, ...CLIENTS]

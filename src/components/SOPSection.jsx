@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef } from 'react'
 import { Reveal, SectionLabel } from './Shared'
 
 const STEPS = [
@@ -19,6 +20,114 @@ const STEPS = [
     img:'/How%20we%20deliver/how%20we%20deliver%208.jpg' },
 ]
 
+function SopCard({ s, onImgClick }) {
+  return (
+    <div className="sop-card">
+      <div className="sop-card__top">
+        <span className="sop-card__num">{s.step}</span>
+        <span className="sop-card__line" />
+        <span className="sop-card__icon">{s.icon}</span>
+      </div>
+      <div className="sop-card__img" onClick={() => onImgClick(s)}>
+        <img src={s.img} alt={s.title} loading="lazy" />
+        <span className="sop-card__img-zoom" aria-hidden="true">⤢</span>
+      </div>
+      <h3 className="sop-card__title">{s.title}</h3>
+      <p className="sop-card__desc">{s.desc}</p>
+    </div>
+  )
+}
+
+/* Full-screen accessible lightbox — reuses the same overlay styles as Services */
+function SopLightbox({ s, onClose }) {
+  if (!s) return null
+  return (
+    <div className="lightbox-overlay" role="dialog" aria-modal="true" aria-label={s.title} onClick={onClose}>
+      <button className="lightbox-close" onClick={onClose} aria-label="Close">✕</button>
+      <img src={s.img} alt={s.title} className="lightbox-img" onClick={e => e.stopPropagation()} />
+      <div className="lightbox-caption">{s.step} — {s.title}</div>
+    </div>
+  )
+}
+
+// Sliding carousel — same behaviour as the testimonial carousel:
+// 3/2/1 visible depending on viewport, auto-advances one card at a time, loops.
+function SopCarousel() {
+  const [visibleCount, setVisibleCount] = useState(
+    typeof window !== 'undefined' && window.innerWidth <= 560 ? 1 : typeof window !== 'undefined' && window.innerWidth <= 900 ? 2 : 3
+  )
+  const [startIdx, setStartIdx] = useState(0)
+  const [animating, setAnimating] = useState(false)
+  const [direction, setDirection] = useState('next')
+  const [lightbox, setLightbox] = useState(null)
+  const total = STEPS.length
+  const timerRef = useRef(null)
+
+  useEffect(() => {
+    const onResize = () => {
+      const next = window.innerWidth <= 560 ? 1 : window.innerWidth <= 900 ? 2 : 3
+      setVisibleCount(v => (v === next ? v : next))
+    }
+    window.addEventListener('resize', onResize, { passive: true })
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
+
+  const VISIBLE = visibleCount
+
+  const advance = (dir = 'next') => {
+    if (animating) return
+    setAnimating(true)
+    setDirection(dir)
+    setTimeout(() => {
+      setStartIdx(i => dir === 'next' ? (i + 1) % total : (i - 1 + total) % total)
+      setAnimating(false)
+    }, 500)
+  }
+
+  useEffect(() => {
+    if (lightbox) return
+    timerRef.current = setInterval(() => advance('next'), 4000)
+    return () => clearInterval(timerRef.current)
+  })
+
+  const visible = []
+  for (let i = 0; i < VISIBLE; i++) visible.push(STEPS[(startIdx + i) % total])
+  const slideFraction = 100 / VISIBLE
+
+  return (
+    <div style={{ marginTop:'2.5rem' }}>
+      <div className="sop-track-wrap">
+        <div
+          className="sop-track-grid"
+          style={{
+            gridTemplateColumns: `repeat(${VISIBLE}, 1fr)`,
+            transition: animating ? 'transform .5s cubic-bezier(.4,0,.2,1)' : 'none',
+            transform: animating
+              ? direction === 'next' ? `translateX(calc(-${slideFraction}% - ${1.5 / VISIBLE}rem))` : `translateX(calc(${slideFraction}% + ${1.5 / VISIBLE}rem))`
+              : 'translateX(0)',
+          }}
+        >
+          {visible.map((s, i) => <SopCard key={`${s.step}-${i}`} s={s} onImgClick={setLightbox} />)}
+        </div>
+      </div>
+
+      <SopLightbox s={lightbox} onClose={() => setLightbox(null)} />
+
+      {/* Controls */}
+      <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:'1rem', marginTop:'2rem' }}>
+        <button onClick={() => advance('prev')} className="sop-nav-btn">←</button>
+        <div style={{ display:'flex', gap:6 }}>
+          {STEPS.map((_, i) => (
+            <button key={i} onClick={() => { if (i !== startIdx && !animating) { setDirection(i > startIdx ? 'next' : 'prev'); setStartIdx(i) } }}
+              style={{ width: i === startIdx ? 28 : 8, height:8, borderRadius:4, border:'none', background: i === startIdx ? 'var(--sr-blue)' : 'var(--border-lt)', cursor:'pointer', transition:'all .35s', padding:0 }} />
+          ))}
+        </div>
+        <button onClick={() => advance('next')} className="sop-nav-btn">→</button>
+      </div>
+    </div>
+  )
+}
+
 export default function SOPSection() {
   return (
     <section id="process" className="section sec-pale">
@@ -30,33 +139,7 @@ export default function SOPSection() {
         </p>
       </Reveal>
 
-      <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(min(100%,260px),1fr))', gap:'1.5rem', marginTop:'2.5rem' }}>
-        {STEPS.map((s, i) => (
-          <Reveal key={s.step} delay={i * 45}>
-            <div style={{ background:'#fff', borderRadius:'var(--radius)', overflow:'hidden', border:'1.5px solid var(--border-lt)', boxShadow:'var(--shadow-sm)', transition:'all .3s', cursor:'default' }}
-                 onMouseEnter={e => { e.currentTarget.style.transform='translateY(-5px)'; e.currentTarget.style.boxShadow='var(--shadow-lg)'; e.currentTarget.style.borderColor='var(--sr-blue)' }}
-                 onMouseLeave={e => { e.currentTarget.style.transform=''; e.currentTarget.style.boxShadow='var(--shadow-sm)'; e.currentTarget.style.borderColor='' }}>
-              {/* Image */}
-              <div style={{ height:140, overflow:'hidden', position:'relative' }}>
-                <img src={s.img} alt={s.title} loading="lazy"
-                     style={{ width:'100%', height:'100%', objectFit:'cover', transition:'transform .5s' }}
-                     onMouseEnter={e => e.currentTarget.style.transform='scale(1.06)'}
-                     onMouseLeave={e => e.currentTarget.style.transform='scale(1)'} />
-                <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top,rgba(8,15,36,.5) 0%,transparent 60%)' }} />
-                <div style={{ position:'absolute', bottom:'.7rem', left:'.9rem', fontFamily:"'Playfair Display',serif", fontSize:'2.5rem', fontWeight:700, color:'rgba(255,255,255,.25)', lineHeight:1 }}>{s.step}</div>
-              </div>
-              {/* Text */}
-              <div style={{ padding:'1.2rem 1.4rem' }}>
-                <div style={{ display:'flex', alignItems:'center', gap:'.5rem', marginBottom:'.5rem' }}>
-                  <span style={{ fontSize:'1.3rem' }}>{s.icon}</span>
-                  <span style={{ fontSize:'.72rem', fontWeight:700, letterSpacing:'.14em', textTransform:'uppercase', color:'var(--txt-dark)' }}>{s.title}</span>
-                </div>
-                <p style={{ fontSize:'.87rem', color:'var(--txt-body)', lineHeight:1.72 }}>{s.desc}</p>
-              </div>
-            </div>
-          </Reveal>
-        ))}
-      </div>
+      <SopCarousel />
 
       {/* Bottom CTA band */}
       <Reveal delay={300}>

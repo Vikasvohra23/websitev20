@@ -112,7 +112,7 @@ export default function Footer({ onAbout }) {
             <div style={{ display:'flex', flexDirection:'column', gap:'.9rem' }}>
               {[
                 { l:'Address', v:'WZ 283/309, Vishnu Garden\nNew Delhi — 110018' },
-                { l:'WhatsApp', v:'+91 9319571414' },
+                { l:'WhatsApp', v:'+91 8929329666' },
                 { l:'Phone', v:'+91 9810499121' },
                 { l:'Email', v:'sr.relocationservices@gmail.com' },
                 { l:'Website', v:'www.srrelocationservices.com' },
