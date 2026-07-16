@@ -1,19 +1,19 @@
-import { Reveal, SectionLabel, WaIcon, BreadcrumbBar } from './Shared'
+import { Reveal, SectionLabel, WaIcon } from './Shared'
 import { YOUR_WA_NUMBER } from '../data/constants'
 import { useDocumentHead, SITE_URL } from '../hooks/useDocumentHead'
 
 const TIMELINE = [
-  { year:'2017', title:'Company Founded',        desc:'Started in New Delhi with a simple mission — professional relocation with a standard the industry lacked.' },
-  { year:'2018', title:'WHO Partnership Begins', desc:'Selected as the relocation partner for WHO South-East Asia Regional Office — a relationship maintained for 8+ years.' },
+  { year:'2017', title:'Company Founded',        desc:'Started in New Delhi with a simple mission - professional relocation with a standard the industry lacked.' },
+  { year:'2018', title:'WHO Partnership Begins', desc:'Selected as the relocation partner for WHO South-East Asia Regional Office - a relationship maintained for 8+ years.' },
   { year:'2019', title:'Industrial Division',    desc:'Expanded into industrial relocation, machine shifting and heavy equipment handling for automotive and manufacturing clients.' },
-  { year:'2020', title:'Pandemic IT Migration',  desc:'Relocated 1 lakh+ IT assets for WNS and affiliated companies during the pandemic. Zero losses. Zero complaints.' },
+  { year:'2020', title:'Pandemic IT Migration',  desc:'Relocated IT assets for WNS and affiliated companies during the pandemic. Zero losses. Zero complaints.' },
   { year:'2021', title:'ISO 9001:2015 Certified',desc:'Achieved ISO certification, formalising quality management, safety protocols and SOPs across all verticals.' },
-  { year:'2022', title:'Heritage & Art Division',desc:'Selected by Rashtrapati Bhawan\'s Art Secretariat for the Presidential Museum — packing rare sculptures, paintings and artifacts.' },
+  { year:'2022', title:'Heritage & Art Division',desc:'Selected by Rashtrapati Bhawan\'s Art Secretariat for the Presidential Museum - packing rare sculptures, paintings and artifacts.' },
   { year:'2023', title:'G20 Summit Logistics',   desc:'Complete logistics, setup and dismantling for the G20 Handicraft Pavilion at Bharat Mandapam for CCIC and EPCH.' },
   { year:'2024+', title:'Growing Pan-India',     desc:'Serving 100+ corporate, industrial and government clients with the same quality that built our reputation since 2017.' },
 ]
 const EQUIPMENT = [
-  { cat:'Heavy Lifting',     items:['Hydraulic Jacks — 30T','40-Tonne Roller Systems','Overhead Gantry Cranes','Chain Pulley Blocks'] },
+  { cat:'Heavy Lifting',     items:['Hydraulic Jacks - 50T','60-Tonne Roller Systems','Forklifts & Cranes','Chain Pulley Blocks','10T Hand Pallet'] },
   { cat:'Material Handling', items:['Electric Forklifts','Hand Pallet Trucks','Rigging Slings & Chains','Custom Skidding Systems'] },
   { cat:'Packing',           items:['Vacuum Packing Machines','Pine & Saw Wood Crating','LED Boxes (TV Safety)','Fabric Furniture Sheets'] },
   { cat:'Transport',         items:['GPS-Tracked Closed Trucks','Dedicated Trailers','Flatbed Vehicles','Specialist Carriers'] },
@@ -30,7 +30,7 @@ export default function AboutPage({ onBack }) {
   }
 
   useDocumentHead({
-    title: 'About Us | Shree Radhey Relocation Services — 8 Years of Trust',
+    title: 'About Us | Shree Radhey Relocation Services - 9 Years of Trust',
     description: "ISO 9001:2015 certified relocation company in New Delhi offering household, office, industrial, export packing and logistics services across India. Founded 2017.",
     path: '/about',
     jsonLd: breadcrumbLd,
@@ -40,7 +40,9 @@ export default function AboutPage({ onBack }) {
   return (
     <main className="page-enter" itemScope itemType="https://schema.org/Organization">
       {/* ── Sticky breadcrumb below nav ── */}
-      <BreadcrumbBar label="About Us" onBack={onBack} />
+      <div className="breadcrumb-bar">
+        <button className="btn btn--outline-blue btn--lg" onClick={onBack}>Back to About</button>
+      </div>
 
       {/* ── SEO hidden org data ── */}
       <span className="seo-text" itemProp="name">Shree Radhey Relocation Services</span>
@@ -70,16 +72,16 @@ export default function AboutPage({ onBack }) {
             <Reveal><SectionLabel text="Our Story" /></Reveal>
             <Reveal delay={80}><h2 style={{ marginTop:'.4rem' }}>From household moves to <em>presidential museums.</em></h2></Reveal>
             <Reveal delay={140}>
-              <p style={{ marginTop:'1.2rem' }}>Shree Radhey Relocation Services was founded in 2017 with one conviction: India deserved a relocation company that treated every project — a studio apartment or a factory floor — with the same rigour and professionalism.</p>
-              <p style={{ marginTop:'.9rem' }}>That belief attracted clients with the highest stakes. WHO South-East Asia trusted us with their office. Rashtrapati Bhawan trusted us with irreplaceable presidential artifacts. IRCTC trusted us with the Maharaja Express interiors. These are not transactions — they are partnerships built over years of consistent delivery.</p>
+              <p style={{ marginTop:'1.2rem' }}>Shree Radhey Relocation Services was founded in 2017 with one conviction: India deserved a relocation company that treated every project - a studio apartment or a factory floor  with the same rigour and professionalism.</p>
+              <p style={{ marginTop:'.9rem' }}>That belief attracted clients with the highest stakes. WHO South-East Asia trusted us with their office. Rashtrapati Bhawan trusted us with irreplaceable presidential artifacts. IRCTC trusted us with the Maharaja Express interiors. These are not transactions - they are partnerships built over years of consistent delivery.</p>
               <p style={{ marginTop:'.9rem' }}>Today we serve 100+ corporate and industrial clients across India, ISO certified and led by the same founding values: integrity, safety, accountability and customer satisfaction.</p>
             </Reveal>
           </div>
           <div style={{ display:'flex', flexDirection:'column', gap:'1.2rem' }}>
             {[
               { icon:'🎯', t:'Our Mission', d:'To provide reliable, efficient and safe relocation solutions that exceed customer expectations through professionalism, innovation and quality service.' },
-              { icon:'🔭', t:'Our Vision',  d:"To become India's most trusted and respected relocation, logistics and industrial movement company — known for precision, safety and the clients who trust us." },
-              { icon:'❤️', t:'Our Values',  d:'Integrity · Safety · Reliability · Professionalism · Accountability · Customer Satisfaction — operating principles enforced on every job.' },
+              { icon:'🔭', t:'Our Vision',  d:"To become India's most trusted and respected relocation, logistics and industrial movement company - known for precision, safety and the clients who trust us." },
+              { icon:'❤️', t:'Our Values',  d:'Integrity · Safety · Reliability · Professionalism · Accountability · Customer Satisfaction - operating principles enforced on every job.' },
             ].map((c, i) => (
               <Reveal key={c.t} delay={i * 80}>
                 <div className="hover-float" style={{ background:'var(--off-white)', border:'1.5px solid var(--border-lt)', borderRadius:'var(--radius)', padding:'1.5rem', display:'flex', gap:'1rem' }}>

@@ -73,16 +73,6 @@ export default function FAQSection() {
               </button>
             ))}
           </div>
-
-          {/* WA CTA */}
-          <div style={{ marginTop:'1.4rem', padding:'1.3rem', background:'var(--off-white)', borderRadius:'var(--radius)', border:'1.5px solid var(--border-lt)' }}>
-            <div style={{ fontSize:'.72rem', fontWeight:700, letterSpacing:'.14em', textTransform:'uppercase', color:'var(--sr-blue)', marginBottom:'.4rem' }}>Still have a question?</div>
-            <p style={{ fontSize:'.87rem', marginBottom:'.9rem', lineHeight:1.6 }}>Our team responds within the hour, even on weekends.</p>
-            <a href={`https://wa.me/${YOUR_WA_NUMBER}?text=${encodeURIComponent('Hello! I have a question about your services.')}`}
-               target="_blank" rel="noopener noreferrer" className="btn btn--wa btn--sm" style={{ width:'100%' }}>
-              <WaIcon /> Ask on WhatsApp
-            </a>
-          </div>
         </div>
 
         {/* RIGHT — accordion — always full of content, no blank space */}
@@ -96,9 +86,21 @@ export default function FAQSection() {
             </Reveal>
           ))}
 
+          {/* WA CTA — below the FAQ, not above it */}
+          <Reveal delay={160}>
+            <div className="faq-wa-cta" style={{ marginTop:'2rem', padding:'1.3rem', background:'var(--off-white)', borderRadius:'var(--radius)', border:'1.5px solid var(--border-lt)' }}>
+              <div style={{ fontSize:'.72rem', fontWeight:700, letterSpacing:'.14em', textTransform:'uppercase', color:'var(--sr-blue)', marginBottom:'.4rem' }}>Still have a question?</div>
+              <p style={{ fontSize:'.87rem', marginBottom:'.9rem', lineHeight:1.6 }}>Our team responds within the hour, even on weekends.</p>
+              <a href={`https://wa.me/${YOUR_WA_NUMBER}?text=${encodeURIComponent('Hello! I have a question about your services.')}`}
+                 target="_blank" rel="noopener noreferrer" className="btn btn--wa btn--sm" style={{ width:'100%' }}>
+                <WaIcon /> Ask on WhatsApp
+              </a>
+            </div>
+          </Reveal>
+
           {/* Bottom trust strip — fills remaining space visually */}
-          <Reveal delay={200}>
-            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'1rem', marginTop:'2.5rem' }}>
+          <Reveal delay={220}>
+            <div className="faq-trust-grid" style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'1rem', marginTop:'1.4rem' }}>
               {[
                 { icon:'🏅', t:'ISO 9001:2015',       d:'Certified quality management.' },
                 { icon:'📍', t:'GPS Tracked',          d:'Live tracking on all vehicles.' },

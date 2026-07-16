@@ -6,7 +6,7 @@ const WHY = [
   { icon:'📍', t:'GPS Live Tracking',            d:'Real-time consignment tracking on all vehicles throughout transit.' },
   { icon:'🦺', t:'Safety-First Culture',         d:'PPE mandatory for all crew. Health insurance for every packing and loading team member.' },
   { icon:'🤝', t:'Personal Shifting Assistant',  d:'Dedicated coordinator from Day 1 to final handover. 24×7 response guaranteed.' },
-  { icon:'🔧', t:'Specialist Equipment',         d:'30-ton hydraulic jacks, 40-ton rollers, cranes and vacuum packing machines on every job.' },
+  { icon:'🔧', t:'Specialist Equipment',         d:'50-ton hydraulic jacks, 60-ton rollers, cranes and vacuum packing machines for every job.' },
 ]
 
 export default function AboutTeaser({ onLearnMore }) {
@@ -26,7 +26,7 @@ export default function AboutTeaser({ onLearnMore }) {
           {/* Trust card */}
           <div className="trust-card" style={{ position:'absolute', bottom:'2rem', left:'2rem', background:'rgba(255,255,255,.97)', borderRadius:12, padding:'1rem 1.4rem', boxShadow:'0 8px 32px rgba(0,0,0,.18)', maxWidth:220, animation:'fadeUp .7s ease .4s both' }}>
             <div style={{ fontSize:'.6rem', fontWeight:700, letterSpacing:'.16em', textTransform:'uppercase', color:'var(--sr-red)', marginBottom:5 }}>Est. 2017</div>
-            <div style={{ fontFamily:"'Playfair Display',serif", fontSize:'1rem', fontWeight:700, color:'var(--txt-dark)', lineHeight:1.3 }}>8 Years of Unbroken Trust</div>
+            <div style={{ fontFamily:"'Playfair Display',serif", fontSize:'1rem', fontWeight:700, color:'var(--txt-dark)', lineHeight:1.3 }}>9 Years of Unbroken Trust</div>
             <div style={{ fontSize:'.78rem', color:'var(--txt-body)', marginTop:4 }}>Govt · MNCs · Industrial · Residential</div>
           </div>
         </div>
@@ -46,7 +46,7 @@ export default function AboutTeaser({ onLearnMore }) {
           </Reveal>
           <Reveal delay={200}>
             <p style={{ marginTop:'.9rem', fontSize:'1.02rem', lineHeight:1.85 }}>
-              From the President of India's Museum to WHO South-East Asia, Maharaja Express and 100+ industrial clients — our reputation is built on precision, safety and trust.
+              From the President of India's Museum to WHO South-East Asia, Maharaja Express and 100+ industrial clients - our reputation is built on precision, safety and trust.
             </p>
           </Reveal>
           <Reveal delay={260}>
@@ -69,7 +69,7 @@ export default function AboutTeaser({ onLearnMore }) {
 
       {/* ── Stats bar ── */}
       <div className="about-stats-grid" style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', background:'var(--navy)' }}>
-        {[{ n:'2017', l:'Founded' },{ n:'100+', l:'Industrial Clients' },{ n:'1L+', l:'IT Assets Moved' },{ n:'8+', l:'Years of Trust' }].map((s, i) => (
+        {[{ n:'2017', l:'Founded' },{ n:'100+', l:'Industrial Clients' },{ n:'1L+', l:'IT Assets Moved' },{ n:'9+', l:'Years of Trust' }].map((s, i) => (
           <div key={s.l} style={{ padding:'2rem 1.5rem', textAlign:'center', borderRight: i<3 ? '1px solid rgba(255,255,255,.07)' : 'none' }}>
             <div style={{ fontFamily:"'Playfair Display',serif", fontSize:'clamp(1.8rem,3.5vw,2.8rem)', fontWeight:700, color:'#fff', lineHeight:1 }}>{s.n}</div>
             <div style={{ fontSize:'.68rem', fontWeight:700, letterSpacing:'.1em', textTransform:'uppercase', color:'rgba(255,255,255,.45)', marginTop:6 }}>{s.l}</div>

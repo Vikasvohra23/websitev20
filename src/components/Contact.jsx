@@ -1,12 +1,12 @@
 import { useState } from 'react'
-import { CONTACT_INFO, SERVICE_TYPES } from '../data/constants'
+import { CONTACT_INFO, SERVICE_TYPES, YOUR_WA_NUMBER } from '../data/constants'
 import { buildContactWaUrl } from '../utils/whatsapp'
 import { Reveal, SectionLabel, WaIcon } from './Shared'
 
 const INFO_ITEMS = [
   { icon:'📍', label:'Head Office',  value:'WZ 283/309, Vishnu Garden\nNew Delhi — 110018',  link:null },
-  { icon:'💬', label:'WhatsApp',     value:'+91 9319571414',  link:'https://wa.me/919319571414' },
-  { icon:'📞', label:'Phone',        value:'+91 9810499121 / 9910285409',  link:'tel:+919810499121' },
+  { icon:'💬', label:'WhatsApp',     value:'+91 8929329666',  link:`https://wa.me/${YOUR_WA_NUMBER}` },
+  { icon:'📞', label:'Phone',        value:'+91 9810499121 / 9319571414',  link:'tel:+919810499121' },
   { icon:'✉️', label:'Email',        value:'sr.relocationservices@gmail.com',  link:'mailto:sr.relocationservices@gmail.com' },
   { icon:'🌐', label:'Website',      value:'www.srrelocationservices.com',  link:'https://www.srrelocationservices.com' },
 ]
@@ -32,7 +32,7 @@ export default function Contact() {
   return (
     <section id="contact" itemScope itemType="https://schema.org/LocalBusiness">
       <span className="seo-text" itemProp="name">Shree Radhey Relocation Services</span>
-      <span className="seo-text" itemProp="telephone">+91-9319571414</span>
+      <span className="seo-text" itemProp="telephone">+91-8929329666</span>
       <span className="seo-text" itemProp="address" itemScope itemType="https://schema.org/PostalAddress">
         <span itemProp="streetAddress">WZ 283/309, Vishnu Garden</span>
         <span itemProp="addressLocality">New Delhi</span>

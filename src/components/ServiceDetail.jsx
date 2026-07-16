@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { SERVICE_PAGES } from '../data/constants'
+import { SERVICE_PAGES, YOUR_WA_NUMBER } from '../data/constants'
 import { Reveal, SectionLabel, WaIcon, BreadcrumbBar } from './Shared'
 import { useDocumentHead, SITE_URL } from '../hooks/useDocumentHead'
 
@@ -144,7 +144,7 @@ export default function ServiceDetail({ slug, onBack }) {
                 <p>We respond within 1 hour.</p>
               </div>
               <div className="sd-cta-box__body">
-                <a href={`https://wa.me/919319571414?text=${waMsg}`} target="_blank" rel="noopener noreferrer" className="btn btn--wa" style={{ width:'100%' }}>
+                <a href={`https://wa.me/${YOUR_WA_NUMBER}?text=${waMsg}`} target="_blank" rel="noopener noreferrer" className="btn btn--wa" style={{ width:'100%' }}>
                   <WaIcon /> WhatsApp Us Now
                 </a>
                 <button className="btn btn--outline-blue" style={{ width:'100%' }}

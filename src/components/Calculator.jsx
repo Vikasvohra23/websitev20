@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { CFT_ITEMS, ADMIN_PASSWORD, RATE_PER_CFT, YOUR_WA_NUMBER, YOUR_EMAIL } from '../data/constants'
 import { calculateEstimate } from '../utils/cftCalculator'
 import { buildEstimateWaUrl } from '../utils/whatsapp'
@@ -81,12 +81,44 @@ function SuccessScreen({ onReset }) {
 
 /* ── Main Calculator ──────────────────────────────────────── */
 export default function Calculator() {
-  const [qty,         setQty]         = useState({})
-  const [moveType,    setMoveType]     = useState('local')  // 'local' | 'intercity'
-  const [origin,      setOrigin]       = useState('')
-  const [destination, setDestination]  = useState('')
-  const [showModal,   setShowModal]    = useState(false)
-  const [success,     setSuccess]      = useState(false)
+  const [qty,                    setQty]                    = useState({})
+  const [moveType,               setMoveType]               = useState('local')  // 'local' | 'intercity'
+  const [origin,                 setOrigin]                 = useState('')
+  const [destination,            setDestination]            = useState('')
+  const [originSuggestions,      setOriginSuggestions]      = useState([])
+  const [destinationSuggestions, setDestinationSuggestions] = useState([])
+  const [originFocused,          setOriginFocused]          = useState(false)
+  const [destinationFocused,     setDestinationFocused]     = useState(false)
+  const [showModal,              setShowModal]              = useState(false)
+  const [success,                setSuccess]                = useState(false)
+
+  const fetchPlaceSuggestions = async (query, setter) => {
+    if (!query.trim() || query.trim().length < 3) {
+      setter([])
+      return
+    }
+
+    try {
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=jsonv2&q=${encodeURIComponent(query)}&addressdetails=1&limit=6`
+      )
+      if (!response.ok) return
+      const data = await response.json()
+      setter(data.map(place => place.display_name).filter(Boolean))
+    } catch {
+      setter([])
+    }
+  }
+
+  useEffect(() => {
+    const timer = setTimeout(() => fetchPlaceSuggestions(origin, setOriginSuggestions), 300)
+    return () => clearTimeout(timer)
+  }, [origin])
+
+  useEffect(() => {
+    const timer = setTimeout(() => fetchPlaceSuggestions(destination, setDestinationSuggestions), 300)
+    return () => clearTimeout(timer)
+  }, [destination])
 
   // Admin panel (hidden rate view)
   const [adminMode,   setAdminMode]    = useState(false)
@@ -211,25 +243,101 @@ Rate:        ₹${RATE_PER_CFT}/CFT
 
               {/* Origin & destination */}
               <div className="field-group">
-                <div>
-                  <label className="field-label">Moving From (Google Maps name)</label>
+                <div style={{ position:'relative' }}>
+                  <label className="field-label">Moving From</label>
                   <input
                     className="field"
                     type="text"
                     placeholder="e.g. Sector 62, Noida"
                     value={origin}
                     onChange={e => setOrigin(e.target.value)}
+                    onFocus={() => setOriginFocused(true)}
+                    onBlur={() => setTimeout(() => setOriginFocused(false), 120)}
+                    autoComplete="off"
                   />
+                  {originFocused && originSuggestions.length > 0 && (
+                    <div style={{
+                      position:'absolute',
+                      top:'100%',
+                      left:0,
+                      right:0,
+                      marginTop:'0.55rem',
+                      background:'#fff',
+                      border:'1px solid rgba(0,0,0,.12)',
+                      borderRadius:10,
+                      boxShadow:'0 12px 30px rgba(15,23,42,.12)',
+                      zIndex:20,
+                      overflow:'hidden',
+                    }}>
+                      {originSuggestions.map((text, idx) => (
+                        <button
+                          key={`${text}-${idx}`}
+                          type="button"
+                          onMouseDown={() => { setOrigin(text); setOriginSuggestions([]) }}
+                          style={{
+                            width:'100%',
+                            textAlign:'left',
+                            padding:'0.85rem 1rem',
+                            border:'none',
+                            background:'transparent',
+                            cursor:'pointer',
+                            fontSize:'0.95rem',
+                            color:'var(--txt-dark)',
+                          }}
+                        >
+                          {text}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
-                <div>
-                  <label className="field-label">Moving To (Google Maps name)</label>
+                <div style={{ position:'relative' }}>
+                  <label className="field-label">Moving To</label>
                   <input
                     className="field"
                     type="text"
                     placeholder="e.g. Dwarka, New Delhi"
                     value={destination}
                     onChange={e => setDestination(e.target.value)}
+                    onFocus={() => setDestinationFocused(true)}
+                    onBlur={() => setTimeout(() => setDestinationFocused(false), 120)}
+                    autoComplete="off"
                   />
+                  {destinationFocused && destinationSuggestions.length > 0 && (
+                    <div style={{
+                      position:'absolute',
+                      top:'100%',
+                      left:0,
+                      right:0,
+                      marginTop:'0.55rem',
+                      background:'#fff',
+                      border:'1px solid rgba(0,0,0,.12)',
+                      borderRadius:10,
+                      boxShadow:'0 12px 30px rgba(15,23,42,.12)',
+                      zIndex:20,
+                      overflow:'hidden',
+                    }}>
+                      {destinationSuggestions.map((text, idx) => (
+                        <button
+                          key={`${text}-${idx}`}
+                          type="button"
+                          onMouseDown={() => { setDestination(text); setDestinationSuggestions([]) }}
+                          style={{
+                            width:'100%',
+                            textAlign:'left',
+                            padding:'0.85rem 1rem',
+                            border:'none',
+                            background:'transparent',
+                            cursor:'pointer',
+                            fontSize:'0.95rem',
+                            color:'var(--txt-dark)',
+                          }}
+                        >
+                          {text}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
 
