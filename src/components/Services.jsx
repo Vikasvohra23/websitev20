@@ -7,7 +7,7 @@ import { Reveal, SectionLabel } from './Shared'
 const SERVICE_CARDS = [
   { num:'01', slug:'industrial-relocation', title:'Industrial Plant Relocation', badge:'Specialist',    desc:'Full factory moves, heavy machinery, robots, CMM machines and production lines. Zero disassembly where possible.', tags:['Rigging','Hydraulic Jacks'],   img:'/images/service-01.jpg' },
   { num:'02', slug:'office-relocation',     title:'Office & IT Asset Relocation',badge:'Zero Downtime', desc:'Weekend and overnight moves for corporates. 1 lakh+ IT assets relocated for WHO, WNS and Ameriprise.', tags:['ESD-Safe','Overnight'],         img:'/images/service-02.jpg' },
-  { num:'03', slug:'household-relocation',  title:'Household Relocation',        badge:'Pan India',     desc:'Local or intercity — professional packing, secure transport, careful furniture placement. All across India.', tags:['Local','Intercity'],            img:'/images/service-03.jpg' },
+  { num:'03', slug:'household-relocation',  title:'Household Relocation',        badge:'Pan India',     desc:'Local or intercity - professional packing, secure transport, careful furniture placement. All across India.', tags:['Local','Intercity'],            img:'/images/service-03.jpg' },
   { num:'04', slug:'export-packing',        title:'Export & International Packing',badge:'Global',      desc:'Vacuum packing, pine-wood crating and container stuffing. Exports to USA, UK, Australia, Dubai and beyond.', tags:['Vacuum Packing','ISPM-15'],    img:'/images/service-04.jpg' },
   { num:'05', slug:'heritage-packing',      title:'Art, Heritage & Artifacts',   badge:'Govt. Trusted', desc:'Museum-grade handling. Trusted by Rashtrapati Bhawan\'s Art Secretariat for the Presidential Museum.', tags:['White Glove','Govt. Cleared'], img:'/images/service-05.jpg' },
   { num:'06', slug:'exhibition-logistics',  title:'Exhibition & Event Logistics', badge:'Time-Critical', desc:'G20 Summit, Shilp Guru Awards, Vigyan Bhawan. Full setup, display packing and post-event dismantling.', tags:['Govt. Events','Setup'],         img:'/images/service-06.jpg' },
@@ -66,7 +66,7 @@ export default function Services({ onServiceClick }) {
         <SectionLabel text="Our Services" />
         <h2 style={{ marginTop:'.4rem' }}>What we <em>specialise</em> in.</h2>
         <p style={{ marginTop:'.8rem', maxWidth:540 }}>
-          From a household move to relocating an entire manufacturing plant — every project gets the same ISO-certified process, specialist equipment and professional team.
+          From a household move to relocating an entire manufacturing plant - every project gets the same ISO-certified packing process, specialist equipment and professional team.
         </p>
       </Reveal>
 

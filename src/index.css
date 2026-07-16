@@ -248,7 +248,7 @@ textarea.field { resize:vertical; min-height:100px; }
 /* Slide nav dots */
 .hero__dots { position:absolute; bottom:2.5rem; left:var(--px); z-index:5; display:flex; gap:.6rem; align-items:center; }
 .hero__dot  { width:28px; height:3px; border-radius:2px; background:rgba(255,255,255,.3); cursor:pointer; transition:all .3s; border:none; }
-..hero__dot.active { background:#fff; width:48px; }
+.hero__dot.active { background:#fff; width:48px; }
 
 /* PromoBanner specific overrides to enable responsive behaviour while
    preserving desktop appearance. Mobile rules below adjust spacing,
@@ -440,7 +440,10 @@ textarea.field { resize:vertical; min-height:100px; }
 .testimonial-card__attr  { font-size:.72rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--sr-blue); }
 
 /* Client logo grid */
-.client-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,150px),1fr)); gap:1px; background:var(--border-lt); border:1px solid var(--border-lt); border-radius:var(--radius); overflow:hidden; margin-top:2rem; }
+.client-grid { display:grid; grid-template-columns:repeat(10,1fr); gap:1px; background:var(--border-lt); border:1px solid var(--border-lt); border-radius:var(--radius); overflow:hidden; margin-top:2rem; }
+@media(max-width:1200px) { .client-grid { grid-template-columns:repeat(8,1fr); } }
+@media(max-width:768px) { .client-grid { grid-template-columns:repeat(5,1fr); } }
+@media(max-width:480px) { .client-grid { grid-template-columns:repeat(3,1fr); } }
 .client-cell { background:#fff; padding:1.5rem 1rem; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:4px; transition:background .2s; }
 .client-cell:hover { background:var(--off-white); }
 .client-cell__name { font-size:.68rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--txt-body); text-align:center; }

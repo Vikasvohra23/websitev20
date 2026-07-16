@@ -32,12 +32,12 @@ const PROJECT_IMAGES = {
 }
 
 const TESTIMONIALS = [
-  { quote:"Shree Radhey has been our trusted relocation partner for over 8 years. Their professionalism, attention to detail and ability to handle sensitive materials without damage makes them irreplaceable.", stars:5, attr:"WHO South-East Asia Office", role:"New Delhi Regional Office", initials:"WHO", color:"#0077B6" },
-  { quote:"We entrusted them with irreplaceable presidential artifacts — sculptures, paintings and rare collectibles for the Presidential Museum. Their museum-grade handling exceeded every expectation.", stars:5, attr:"Rashtrapati Bhawan", role:"Art Secretariat, President's Office", initials:"RB", color:"#1B3A8C" },
-  { quote:"Over 1 lakh IT assets — laptops, servers, hubs and workstations — relocated to employees' homes during the pandemic. Zero losses. Complete professionalism throughout.", stars:5, attr:"WNS Global Services", role:"Corporate Client", initials:"WNS", color:"#2D6A4F" },
-  { quote:"Our annual Maharaja Express packing is handled by Shree Radhey with remarkable care for our heritage furniture and custom fittings. The same quality, year after year. Highly recommended.", stars:5, attr:"IRCTC — Maharaja Express", role:"India's Premier Luxury Train", initials:"IRT", color:"#6B2737" },
-  { quote:"They handled our entire G20 exhibition logistics at Bharat Mandapam — setup, display packing and post-event dismantling — flawlessly. Time-critical, high-stakes, perfectly executed.", stars:5, attr:"CCIC / EPCH", role:"G20 Summit Exhibition, 2023", initials:"G20", color:"#b85a10" },
-  { quote:"Machine shifting for our automotive plant required precision we didn't think was possible. Shree Radhey proved us wrong — zero misalignment, zero downtime.", stars:5, attr:"GKN Driveline India", role:"Automotive Manufacturer", initials:"GKN", color:"#1B3A8C" },
+  { quote:"Shree Radhey has been our trusted relocation partner for over 6 years. Their professionalism, attention to detail and ability to handle sensitive materials without damage makes them irreplaceable.", stars:5, attr:"WHO South-East Asia Office", role:"New Delhi Regional Office", initials:"WHO", color:"#0077B6" },
+  { quote:"We entrusted them with irreplaceable presidential artifacts - sculptures, paintings and rare collectibles for the Presidential Museum. Their museum-grade handling exceeded every expectation.", stars:5, attr:"Rashtrapati Bhawan", role:"Art Secretariat, President's Office", initials:"RB", color:"#1B3A8C" },
+  { quote:"Our IT assets  laptops, servers, hubs and workstations - relocated to employees' homes during the pandemic. Zero losses. Complete professionalism throughout.", stars:5, attr:"WNS Global Services", role:"Corporate Client", initials:"WNS", color:"#2D6A4F" },
+  { quote:"Our annual Maharaja Express packing is handled by Shree Radhey with remarkable care for our heritage furniture and custom fittings. The same quality, year after year. Highly recommended.", stars:5, attr:"IRCTC - Maharaja Express", role:"India's Premier Luxury Train", initials:"IRT", color:"#6B2737" },
+  { quote:"They handled our entire G20 exhibition logistics at Bharat Mandapam - setup, display packing and post-event dismantling - flawlessly. Time-critical, high-stakes, perfectly executed.", stars:5, attr:"CCIC / EPCH", role:"G20 Summit Exhibition, 2023", initials:"G20", color:"#b85a10" },
+  { quote:"Machine shifting for our automotive plant required precision we didn't think was possible. Shree Radhey proved us wrong - zero misalignment, zero downtime.", stars:5, attr:"GKN Driveline India", role:"Automotive Manufacturer", initials:"GKN", color:"#1B3A8C" },
 ]
 
 function Stars({ n }) {
@@ -190,6 +190,13 @@ const CLIENT_LOGOS = {
   'Takahata Precision': '/Client%20Logo/takahata.png',
   'Sun Pharma': '/Client%20Logo/Sun%20Pharma.png',
   'Unicharm India': '/Client%20Logo/unicharm.png',
+  'Padmini VNA': '/Client%20Logo/Padmini.png',
+  'Continental': '/Client%20Logo/Continental.png',
+  'Aumovio': '/Client%20Logo/Auomovio.png',
+  'NCMG': '/Client%20Logo/NCMG.jpg',
+  'Volvo': '/Client%20Logo/Volvo.png',
+  'Eicher': '/Client%20Logo/Eicher.jpg',
+  'Sigma': '/Client%20Logo/Sigma.png',
 }
 
 export default function Projects() {
@@ -231,12 +238,21 @@ export default function Projects() {
               { name:'IRCTC', cat:'Government' },{ name:'CCIC India', cat:'Government' },
               { name:'Ameriprise Financial', cat:'Finance' },{ name:'WNS Global', cat:'BPO' },
               { name:'Samsung India', cat:'Electronics' },{ name:'Daikin India', cat:'HVAC' },
-              { name:'GKN Driveline', cat:'Automotive' },{ name:'Hankook Tires', cat:'Automotive' },
+              { name:'GKN Driveline', cat:'Automotive' },{ name:'Takahata Precision', cat:'Automotive' },
+              
+              { name:'Bando India', cat:'Industrial' },{ name:'JTEKT India', cat:'Automotive' },
+              { name:'Hankook Tires', cat:'Automotive' },{ name:'Senior India', cat:'Industrial' },
+              { name:'Unicharm India', cat:'FMCG' },{ name:'Yakult Danone', cat:'FMCG' },
               { name:'Hyatt Hotels', cat:'Hospitality' },{ name:'Denso India', cat:'Automotive' },
               { name:'Airtel India', cat:'Telecom' },{ name:'JSW Energy', cat:'Energy' },
-              { name:'Yakult Danone', cat:'FMCG' },{ name:'Sun Pharma', cat:'Pharma' },
-              { name:'Flyjac Logistics', cat:'Logistics' },{ name:'Bando India', cat:'Industrial' },
-              { name:'Senior India', cat:'Industrial' },{ name:'Unicharm India', cat:'FMCG' },
+              
+              { name:'Flyjac Logistics', cat:'Logistics' },{ name:'Sun Pharma', cat:'Pharma' },
+              { name:'Cheil India', cat:'Marketing' },{ name:'CoinTribe', cat:'Fintech' },
+              { name:'Padmini VNA', cat:'Automotive' },{ name:'Continental', cat:'Automotive' },
+              { name:'Aumovio', cat:'Automotive' },{ name:'NCMG', cat:'Government' },
+              { name:'Volvo', cat:'Automotive' },{ name:'Eicher', cat:'Automotive' },
+              
+              { name:'Sigma', cat:'Industrial' },
             ].map((c, i) => {
               const logo = CLIENT_LOGOS[c.name]
               return (

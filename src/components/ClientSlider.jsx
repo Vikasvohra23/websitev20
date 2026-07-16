@@ -25,6 +25,13 @@ const CLIENTS = [
   { name:'Sun Pharma',           cat:'Pharma'       },
   { name:'Cheil India',          cat:'Marketing'    },
   { name:'CoinTribe',            cat:'Fintech'      },
+  { name:'Padmini VNA',          cat:'Automotive'   },
+  { name:'Continental',          cat:'Automotive'   },
+  { name:'Aumovio',              cat:'Automotive'   },
+  { name:'NCMG',                 cat:'Government'   },
+  { name:'Volvo',                cat:'Automotive'   },
+  { name:'Eicher',               cat:'Automotive'   },
+  { name:'Sigma',                cat:'Industrial'   },
 ]
 
 const CLIENT_LOGOS = {
@@ -52,6 +59,13 @@ const CLIENT_LOGOS = {
   'Takahata Precision': '/Client%20Logo/takahata.png',
   'Sun Pharma': '/Client%20Logo/Sun%20Pharma.png',
   'Unicharm India': '/Client%20Logo/unicharm.png',
+  'Padmini VNA': '/Client%20Logo/Padmini.png',
+  'Continental': '/Client%20Logo/Continental.png',
+  'Aumovio': '/Client%20Logo/Auomovio.png',
+  'NCMG': '/Client%20Logo/NCMG.jpg',
+  'Volvo': '/Client%20Logo/Volvo.png',
+  'Eicher': '/Client%20Logo/Eicher.jpg',
+  'Sigma': '/Client%20Logo/Sigma.png',
 }
 
 const doubled = [...CLIENTS, ...CLIENTS]

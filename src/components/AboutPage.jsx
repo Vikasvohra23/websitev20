@@ -4,7 +4,7 @@ import { useDocumentHead, SITE_URL } from '../hooks/useDocumentHead'
 
 const TIMELINE = [
   { year:'2017', title:'Company Founded',        desc:'Started in New Delhi with a simple mission - professional relocation with a standard the industry lacked.' },
-  { year:'2018', title:'WHO Partnership Begins', desc:'Selected as the relocation partner for WHO South-East Asia Regional Office - a relationship maintained for 8+ years.' },
+  { year:'2018', title:'WHO Partnership Begins', desc:'Selected as the relocation partner for WHO South-East Asia Regional Office - a relationship maintained for 9+ years.' },
   { year:'2019', title:'Industrial Division',    desc:'Expanded into industrial relocation, machine shifting and heavy equipment handling for automotive and manufacturing clients.' },
   { year:'2020', title:'Pandemic IT Migration',  desc:'Relocated IT assets for WNS and affiliated companies during the pandemic. Zero losses. Zero complaints.' },
   { year:'2021', title:'ISO 9001:2015 Certified',desc:'Achieved ISO certification, formalising quality management, safety protocols and SOPs across all verticals.' },
