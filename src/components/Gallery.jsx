@@ -124,7 +124,7 @@ function Lightbox({ images, index, onClose, onPrev, onNext }) {
 }
 
 /* ── Gallery ──────────────────────────────────────────────── */
-export default function Gallery() {
+export default function Gallery({ hideHeader = false }) {
   const [activeCategory, setActiveCategory] = useState('all')
   const [lightboxIndex,  setLightboxIndex]  = useState(null)
 
@@ -147,16 +147,20 @@ export default function Gallery() {
 
   return (
     <section id="gallery" className="section sec-off">
-      <Reveal><SectionLabel text="Our Work" /></Reveal>
-      <Reveal delay={80}>
-        <h2>Every project <em>tells a story.</em></h2>
-      </Reveal>
-      <Reveal delay={140}>
-        <p style={{ marginTop:'0.8rem', maxWidth:520 }}>
-          A glimpse of the work we've done — from presidential heritage to industrial precision,
-          luxury trains to export packing.
-        </p>
-      </Reveal>
+      {!hideHeader && (
+        <>
+          <Reveal><SectionLabel text="Our Work" /></Reveal>
+          <Reveal delay={80}>
+            <h2>Every project <em>tells a story.</em></h2>
+          </Reveal>
+          <Reveal delay={140}>
+            <p style={{ marginTop:'0.8rem', maxWidth:520 }}>
+              A glimpse of the work we've done — from presidential heritage to industrial precision,
+              luxury trains to export packing.
+            </p>
+          </Reveal>
+        </>
+      )}
 
       {/* Category filters */}
       <Reveal delay={200}>

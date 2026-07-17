@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { STATS, CREDENTIALS } from '../data/constants'
 import { Reveal, SectionLabel } from './Shared'
 
@@ -11,7 +12,7 @@ export default function About() {
           <div className="about-teaser__img">
             <img
               src="/images/about-1.jpg"
-              alt="SR Relocation team at work - industrial machinery handling"
+              alt="SR Relocation team at work — industrial machinery handling"
             />
             <div className="about-teaser__img-overlay" />
           </div>
@@ -25,10 +26,10 @@ export default function About() {
 
             <Reveal delay={140}>
               <blockquote className="about-quote">
-                "We don't just transport your goods - we move them with your feelings intact, so wherever you go, you always feel the same."
+                "We don't just transport your goods — we move them with your feelings intact, so wherever you go, you always feel the same."
               </blockquote>
               <p style={{ fontSize:'.78rem', fontWeight:600, letterSpacing:'.1em', textTransform:'uppercase', color:'var(--sr-blue)', marginBottom:'1.2rem' }}>
-                - Sanjeev Vohra, Head of Operations
+                — Sanjeev Vohra, Head of Operations
               </p>
             </Reveal>
 
@@ -57,9 +58,9 @@ export default function About() {
                 <a href="#contact" className="btn btn--blue">
                   Discuss Your Project
                 </a>
-                <a href="#gallery" className="btn btn--outline-blue" onClick={e => { e.preventDefault(); document.getElementById('gallery')?.scrollIntoView({ behavior:'smooth' }) }}>
+                <Link to="/gallery" className="btn btn--outline-blue">
                   View Our Work
-                </a>
+                </Link>
               </div>
             </Reveal>
           </div>
@@ -72,7 +73,7 @@ export default function About() {
           { n:'2017', l:'Founded' },
           { n:'100+', l:'Industrial Clients' },
           { n:'1L+',  l:'IT Assets Relocated' },
-          { n:'9+',   l:'Years of Trust' },
+          { n:'8+',   l:'Years of Trust' },
         ].map(s => (
           <div key={s.l} className="stat-box">
             <div className="stat-box__n">{s.n}</div>
@@ -89,7 +90,7 @@ export default function About() {
             <Reveal delay={80}><h2>ISO Certified. <em>Precision-driven.</em></h2></Reveal>
             <Reveal delay={130}>
               <p style={{ marginTop:'.8rem' }}>
-                We are ISO 9001:2015 certified - our processes, safety protocols and quality checks are documented and followed on every project, from a household move to a 80-tonne industrial relocation.
+                We are ISO 9001:2015 certified — our processes, safety protocols and quality checks are documented and followed on every project, from a household move to a 40-tonne industrial relocation.
               </p>
             </Reveal>
 
@@ -145,7 +146,7 @@ export default function About() {
         </Reveal>
         <Reveal delay={80}>
           <div style={{ display:'flex', flexWrap:'wrap', gap:'.8rem', justifyContent:'center' }}>
-            {['Hydraulic Jacks (40T)','60-Ton Rollers','Cranes','Forklifts','Chain Pulley Blocks','Hand Pallets','Rigging Slings','Vacuum Packing Machines','Pine Wood Crating','Custom Foam Inserts','GPS Tracked Trucks','Dedicated Trailers'].map(e => (
+            {['Hydraulic Jacks (30T)','40-Ton Rollers','Overhead Cranes','Forklifts','Chain Pulley Blocks','Hand Pallets','Rigging Slings','Vacuum Packing Machines','Pine Wood Crating','Custom Foam Inserts','GPS Tracked Trucks','Dedicated Trailers'].map(e => (
               <span key={e} style={{ padding:'.5rem 1.2rem', background:'#fff', border:'1.5px solid var(--border-lt)', borderRadius:6, fontSize:'.82rem', fontWeight:500, color:'var(--txt-body)' }}>{e}</span>
             ))}
           </div>

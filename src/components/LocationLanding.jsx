@@ -9,7 +9,7 @@ export default function LocationLanding({ slug, location }) {
   const faqs = [
     {
       q: "How is a factory machine shifted without disassembly?",
-      a: "Heavy machines like CNC and CMM units are lifted using 30-ton hydraulic toe jacks to gain ground clearance, then moved on 40-ton capacity pipe rollers or skates. This roll-and-jack method avoids full disassembly, preserving machine calibration and cutting downtime versus crane-and-crate methods.",
+      a: "Heavy machines like CNC and CMM units are lifted using 30-ton hydraulic toe jacks to gain ground clearance, then moved on 60-ton capacity pipe rollers or skates. This roll-and-jack method avoids full disassembly, preserving machine calibration and cutting downtime versus crane-and-crate methods.",
     },
     {
       q: "What is VCI vacuum packing and why is it used for machinery?",
@@ -37,7 +37,7 @@ export default function LocationLanding({ slug, location }) {
 
   useDocumentHead({
     title: `Industrial Machinery & Plant Shifting Services in ${location} | Shree Radhey Relocation Services`,
-    description: `ISO 9001:2015 certified rigging and relocation for CNC, CMM, and heavy plant machinery in ${location} — zero-disassembly moves, precision re-installation, and IT asset migration.`,
+    description: `ISO 9001:2015 certified rigging and relocation for CNC, CMM, Injection Mouldings and heavy plant machinery in ${location} — zero-disassembly moves, precision re-installation, and IT asset migration.`,
     path: `/industrial-relocation/${slug}`,
     jsonLd: faqJsonLd,
     jsonLdId: `location-faq-${slug}`,
@@ -65,8 +65,8 @@ export default function LocationLanding({ slug, location }) {
         <h2 style={{ fontSize: '1.4rem', marginBottom: '1.2rem' }}>Engineering Specifications & Rigging Equipment</h2>
       </Reveal>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(220px,1fr))', gap: '1.2rem', marginBottom: '2.5rem' }}>
-        <SpecCard title="30-Ton Hydraulic Jacks" desc="Toe jacks for zero-clearance lifting of CNC/CMM beds without base disassembly." />
-        <SpecCard title="40-Ton Roller Systems" desc="Pipe rollers and skates rated to 40 tons for controlled floor-level transport of heavy machine tools." />
+        <SpecCard title="50-Ton Hydraulic Jacks" desc="Toe jacks for zero-clearance lifting of CNC/CMM beds without base disassembly." />
+        <SpecCard title="60-Ton Roller Systems" desc="Pipe rollers and skates rated to 60 tons for controlled floor-level transport of heavy machine tools." />
         <SpecCard title="VCI Vacuum Packing" desc="Corrosion-inhibiting vacuum-sealed barrier packing for export-grade machinery protection." />
       </div>
 

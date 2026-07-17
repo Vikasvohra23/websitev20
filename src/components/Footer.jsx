@@ -15,11 +15,11 @@ const SERVICE_LINKS = [
   ['Project Logistics','project-logistics'],
 ]
 
-// label, target anchor id (scrolled to on homepage) — Home/About handled separately as real routes
+// label, target — either a homepage anchor id (scrolled to) or a real page path
 const QUICK_LINKS = [
   ['Services','services'],
-  ['Projects','projects'],
-  ['Gallery','gallery'],
+  ['Projects','/projects'],
+  ['Gallery','/gallery'],
   ['Estimate','estimate'],
   ['Contact','contact'],
 ]
@@ -95,9 +95,10 @@ export default function Footer({ onAbout }) {
                    onMouseEnter={e => e.target.style.color='#fff'}
                    onMouseLeave={e => e.target.style.color='rgba(255,255,255,.5)'}>About</Link>
               </li>
-              {QUICK_LINKS.map(([l, id]) => (
+              {QUICK_LINKS.map(([l, target]) => (
                 <li key={l}>
-                  <a href={`/#${id}`} onClick={e => { e.preventDefault(); scrollTo(id) }}
+                  <a href={target.startsWith('/') ? target : `/#${target}`}
+                     onClick={e => { e.preventDefault(); target.startsWith('/') ? navigate(target) : scrollTo(target) }}
                      style={{ fontSize:'.85rem', color:'rgba(255,255,255,.5)', transition:'color .2s' }}
                      onMouseEnter={e => e.target.style.color='#fff'}
                      onMouseLeave={e => e.target.style.color='rgba(255,255,255,.5)'}>{l}</a>
@@ -112,7 +113,7 @@ export default function Footer({ onAbout }) {
             <div style={{ display:'flex', flexDirection:'column', gap:'.9rem' }}>
               {[
                 { l:'Address', v:'WZ 283/309, Vishnu Garden\nNew Delhi — 110018' },
-                { l:'WhatsApp', v:'+91 8929329666' },
+                { l:'WhatsApp', v:'+91 9319571414' },
                 { l:'Phone', v:'+91 9810499121' },
                 { l:'Email', v:'sr.relocationservices@gmail.com' },
                 { l:'Website', v:'www.srrelocationservices.com' },

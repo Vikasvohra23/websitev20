@@ -19,7 +19,7 @@ const SLIDES = [
     bg: '/images/hero-3.jpg',
     eyebrow: 'Corporate & IT Asset Relocation',
     heading: <>Office Shifts <em>Done Overnight.</em></>,
-    sub: '100,000+ IT assets relocated for WHO, WNS and Ameriprise — with zero data loss and Monday-morning operational readiness.',
+    sub: '100,000+ IT assets relocated for WHO, WNS and Ameriprise - with zero data loss and Monday-morning operational readiness.',
   },
   {
     bg: '/images/hero-4.jpg',
@@ -31,14 +31,14 @@ const SLIDES = [
     bg: '/images/hero-5.jpg',
     eyebrow: 'Heritage & Art Handling',
     heading: <>Trusted by <em>Rashtrapati Bhawan.</em></>,
-    sub: 'Museum-grade packing of rare sculptures, paintings and presidential artifacts. The highest trust in India — placed in us.',
+    sub: 'Museum-grade packing of rare sculptures, paintings and presidential artifacts. The highest trust in India - placed in us.',
   },
 ]
 
 const STATS = [
   { icon:'🏗️', num:'100+', lbl:'Industrial Clients' },
   { icon:'📦', num:'1L+',  lbl:'IT Assets Moved'   },
-  { icon:'🏆', num:'8+',   lbl:'Years of Trust'     },
+  { icon:'🏆', num:'9+',   lbl:'Years of Trust'     },
 ]
 
 export default function Hero() {

@@ -30,7 +30,7 @@ export default function BlogSection({ onBlogClick }) {
         <SectionLabel text="Insights" />
         <h2 style={{ marginTop:'.4rem' }}>Relocation <em>knowledge base.</em></h2>
         <p style={{ marginTop:'.8rem', maxWidth:500 }}>
-          Practical guides for corporate, industrial and household relocation — written from real project experience.
+          Practical guides for corporate, industrial and household relocation - written from real project experience.
         </p>
       </Reveal>
 

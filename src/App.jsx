@@ -6,8 +6,6 @@ import AboutTeaser   from './components/AboutTeaser'
 import PromoBanner   from './components/PromoBanner'
 import Services      from './components/Services'
 import SOPSection    from './components/SOPSection'
-import Projects      from './components/Projects'
-import Gallery       from './components/Gallery'
 import FAQSection    from './components/FAQSection'
 import BlogSection   from './components/BlogSection'
 import Calculator    from './components/Calculator'
@@ -19,6 +17,8 @@ import AboutPage     from './components/AboutPage'
 import BlogDetail    from './components/BlogDetail'
 import ServiceDetail   from './components/ServiceDetail'
 import ProjectDetail   from './components/ProjectDetail'
+import ProjectsPage    from './components/ProjectsPage'
+import GalleryPage     from './components/GalleryPage'
 import LocationLanding from './components/LocationLanding'
 import NotFound        from './components/NotFound'
 import { useDocumentHead, SITE_URL } from './hooks/useDocumentHead'
@@ -26,7 +26,7 @@ import { SERVICE_PAGES, BLOG_POSTS, FAQS } from './data/constants'
 import { LOCATION_PAGES } from './data/locationPages'
 
 // The section IDs in navigation order (homepage in-page anchors)
-export const NAV_ORDER = ['home','about','services','projects','insights','faq','contact']
+export const NAV_ORDER = ['home','about','services','insights','faq','contact']
 
 const HOME_TITLE = 'Shree Radhey Relocation Services | ISO Certified Packers & Movers in Delhi'
 const HOME_DESC  = 'ISO 9001:2015 certified packers and movers in New Delhi. Industrial relocation, office shifting, household moving, export packing, machine shifting and logistics. Trusted by WHO, Rashtrapati Bhawan, IRCTC and 100+ clients since 2017.'
@@ -81,8 +81,6 @@ function HomePage() {
       <PromoBanner />
       <Services onServiceClick={openService} />
       <SOPSection />
-      <Projects />
-      <Gallery />
       <FAQSection />
       <BlogSection onBlogClick={openBlog} />
       <Calculator />
@@ -106,7 +104,17 @@ function ServiceRoute() {
 function ProjectRoute() {
   const navigate = useNavigate()
   const { slug } = useParams()
-  return <ProjectDetail slug={slug} onBack={() => navigate('/', { state: { scrollTo: 'projects' } })} />
+  return <ProjectDetail slug={slug} onBack={() => navigate('/projects')} />
+}
+
+function ProjectsRoute() {
+  const navigate = useNavigate()
+  return <ProjectsPage onBack={() => navigate('/')} />
+}
+
+function GalleryRoute() {
+  const navigate = useNavigate()
+  return <GalleryPage onBack={() => navigate('/')} />
 }
 
 function LocationRoute() {
@@ -153,7 +161,9 @@ export default function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<AboutRoute />} />
           <Route path="/services/:slug" element={<ServiceRoute />} />
+          <Route path="/projects" element={<ProjectsRoute />} />
           <Route path="/projects/:slug" element={<ProjectRoute />} />
+          <Route path="/gallery" element={<GalleryRoute />} />
           <Route path="/industrial-relocation/:slug" element={<LocationRoute />} />
           <Route path="/insights/:postId" element={<BlogRoute />} />
           <Route path="*" element={<NotFound />} />

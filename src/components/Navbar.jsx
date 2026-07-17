@@ -1,22 +1,24 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { YOUR_WA_NUMBER } from '../data/constants'
 import { WaIcon } from './Shared'
 import srLogo from '../assets/sr-logo.png'
 
-// Correct nav order per brief
+// Order matches actual homepage section order (FAQ renders before Insights/BlogSection)
 const LINKS = [
-  { label:'Home',     id:'home'     },
-  { label:'About Us', id:'about'    },
-  { label:'Services', id:'services' },
-  { label:'Projects', id:'projects' },
-  { label:'Insights', id:'insights' },
+  { label:'Home',     id:'home',     path:'/'        },
+  { label:'About Us', id:'about',    path:'/about'   },
+  { label:'Services', id:'services', matchPrefix:'/services' },
+  { label:'Projects', id:'projects', path:'/projects' },
+  { label:'Gallery',  id:'gallery',  path:'/gallery'  },
   { label:'FAQ',      id:'faq'      },
+  { label:'Insights', id:'insights', matchPrefix:'/insights' },
   { label:'Contact',  id:'contact'  },
 ]
 
 // currentPage is the current pathname (e.g. '/services/foo') or null when on the homepage
 export default function Navbar({ onHome, onAbout, currentPage }) {
+  const navigate = useNavigate()
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [active,   setActive]   = useState('home')
@@ -38,26 +40,31 @@ export default function Navbar({ onHome, onAbout, currentPage }) {
 
   useEffect(() => { document.body.style.overflow = menuOpen ? 'hidden' : '' }, [menuOpen])
 
-  // For real pages (Home, About) — use router Link so crawlers get a real href.
-  // For in-page anchors (Services, Projects, Insights, FAQ, Contact) — scroll on
-  // the homepage, or navigate home first and scroll once it's mounted.
-  const go = (id) => {
+  // For real pages (Home, About, Projects, Gallery) — use router Link so crawlers
+  // get a real href. For in-page anchors (Services, FAQ, Insights, Contact) —
+  // scroll on the homepage, or navigate home first and scroll once it's mounted.
+  const go = (link) => {
     setMenuOpen(false)
-    if (id === 'home') { onHome(); return }
-    if (id === 'about') { onAbout(); return }
+    if (link.id === 'home') { onHome(); return }
+    if (link.id === 'about') { onAbout(); return }
+    if (link.path) { navigate(link.path); return }
     if (!onHomepage) {
       onHome()
-      setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior:'smooth', block:'start' }), 150)
+      setTimeout(() => document.getElementById(link.id)?.scrollIntoView({ behavior:'smooth', block:'start' }), 150)
       return
     }
-    document.getElementById(id)?.scrollIntoView({ behavior:'smooth', block:'start' })
+    document.getElementById(link.id)?.scrollIntoView({ behavior:'smooth', block:'start' })
   }
 
-  const isActive = (id) => onHomepage && active === id
-  const hrefFor = (id) => {
-    if (id === 'home') return '/'
-    if (id === 'about') return '/about'
-    return onHomepage ? `#${id}` : `/#${id}`
+  const isActive = (link) => {
+    if (onHomepage) return active === link.id
+    if (link.path && currentPage === link.path) return true
+    if (link.matchPrefix && currentPage?.startsWith(link.matchPrefix)) return true
+    return false
+  }
+  const hrefFor = (link) => {
+    if (link.path) return link.path
+    return onHomepage ? `#${link.id}` : `/#${link.id}`
   }
 
   return (
@@ -82,13 +89,13 @@ export default function Navbar({ onHome, onAbout, currentPage }) {
             {LINKS.map(l => (
               <li key={l.id}>
                 <a
-                  href={hrefFor(l.id)}
-                  className={isActive(l.id) ? 'active' : ''}
-                  onClick={e => { e.preventDefault(); go(l.id) }}
+                  href={hrefFor(l)}
+                  className={isActive(l) ? 'active' : ''}
+                  onClick={e => { e.preventDefault(); go(l) }}
                   style={{ fontSize:'.72rem', fontWeight:600, letterSpacing:'.1em', position:'relative' }}
                 >
                   {l.label}
-                  {isActive(l.id) && (
+                  {isActive(l) && (
                     <span style={{ position:'absolute', bottom:-4, left:0, right:0, height:2, background:'var(--sr-red)', borderRadius:2 }} />
                   )}
                 </a>
@@ -122,9 +129,9 @@ export default function Navbar({ onHome, onAbout, currentPage }) {
             </div>
           </div>
           {LINKS.map((l, i) => (
-            <a key={l.id} href={hrefFor(l.id)}
-               onClick={e => { e.preventDefault(); go(l.id) }}
-               style={{ animationDelay:`${i*55}ms`, animation:'fadeUp .4s ease both', color: isActive(l.id) ? '#fff' : undefined }}>
+            <a key={l.id} href={hrefFor(l)}
+               onClick={e => { e.preventDefault(); go(l) }}
+               style={{ animationDelay:`${i*55}ms`, animation:'fadeUp .4s ease both', color: isActive(l) ? '#fff' : undefined }}>
               {l.label}
             </a>
           ))}

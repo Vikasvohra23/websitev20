@@ -1,9 +1,34 @@
+import { Link } from 'react-router-dom'
 import { ALL_PROJECTS } from '../data/constants'
 import { Reveal, SectionLabel, BreadcrumbBar } from './Shared'
 import { useDocumentHead, SITE_URL } from '../hooks/useDocumentHead'
 import { slugifyProject } from './Projects'
 import NotFound from './NotFound'
 
+const CAT_IMAGES = {
+  government: '/images/Corporate%20Office%20Relocation.jpg',
+  corporate:  '/images/International%20Office%20Move.jpg',
+  industrial: '/images/Industrial%20Plant%20Support.jpg',
+  luxury:     '/images/Luxury%20Train%20Interiors.jpg',
+  events:     '/images/G20%20Summit%20Exhibition.jpg',
+}
+const PROJECT_IMAGES = {
+  'Presidential Museum':          '/Signature%20Projects/presidential%20museum.jpg',
+  'International Office Move':    '/Signature%20Projects/International%20Office%20Move.jpg',
+  'Maharaja Express Interiors':   '/Signature%20Projects/Maharaja%20Express%20Interiors.jpg',
+  '1 Lakh IT Asset Migration':    '/Signature%20Projects/1%20Lakh%20IT%20Asset%20Migration.jpg',
+  'Corporate Office Relocation':  '/Signature%20Projects/Corporate%20Office%20Relocation.jpg',
+  'G20 Summit Exhibition':        '/Signature%20Projects/G20%20Summit%20Exhibition.jpg',
+  'Shilp Guru Awards':            '/Signature%20Projects/Shilp%20Guru%20Awards.jpeg',
+  '13-Foot Production Line':      '/Signature%20Projects/13-Foot%20Production%20Line.jpg',
+  'Air Tank Vertical Erection':   '/Signature%20Projects/Air%20Tank%20Vertical%20Erection.jpg',
+  'Equipment Handling':           '/Signature%20Projects/Equipment%20Handling.jpeg',
+  'HVAC Equipment Move':          '/Signature%20Projects/HVAC%20Equipment%20Move.jpg',
+  'Automotive Plant Support':     '/Signature%20Projects/Automotive%20Plant%20Support.jpg',
+  'Hotel Furniture Relocation':   '/Signature%20Projects/Hotel%20Furniture%20Relocation.jpg',
+  'Industrial Plant Support':     '/Signature%20Projects/Industrial%20Plant%20Support.jpg',
+  'Luxury Train Interiors':       '/Signature%20Projects/Luxury%20Train%20Interiors.jpg',
+}
 
 // ─── Per-project case study content — researched, specific, non-generic ───
 // Each entry ties real handling/engineering standards to what that exact
@@ -192,14 +217,19 @@ export default function ProjectDetail({ slug, onBack }) {
   const project = ALL_PROJECTS.find(p => slugifyProject(p.title) === slug)
   if (!project) return <NotFound />
 
+  const heroImg = PROJECT_IMAGES[project.title] || CAT_IMAGES[project.category] || CAT_IMAGES.corporate
   const detail = PROJECT_DETAILS[project.title] || DEFAULT_DETAIL
+  const gallerySeeds = [`${slug}-a`, `${slug}-b`]
+  const projectIdx = ALL_PROJECTS.findIndex(p => p.title === project.title)
+  const nextProject = ALL_PROJECTS[(projectIdx + 1) % ALL_PROJECTS.length]
+  const nextSlug = slugifyProject(nextProject.title)
 
   const breadcrumbLd = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
-      { '@type': 'ListItem', position: 2, name: 'Projects', item: `${SITE_URL}/#projects` },
+      { '@type': 'ListItem', position: 2, name: 'Projects', item: `${SITE_URL}/projects` },
       { '@type': 'ListItem', position: 3, name: project.title, item: `${SITE_URL}/projects/${slug}` },
     ],
   }
@@ -217,26 +247,36 @@ export default function ProjectDetail({ slug, onBack }) {
       <BreadcrumbBar label="Projects" onBack={onBack} />
 
       {/* Hero */}
-      <div style={{ position:'relative', background:'var(--navy)', minHeight:'320px', display:'flex', alignItems:'flex-end', overflow:'hidden' }}>
-        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to bottom, rgba(8,15,36,.95) 0%, rgba(8,15,36,.85) 100%)' }} />
-        <div style={{ position:'relative', width:'100%', padding:'var(--px) var(--px) 3rem' }}>
-          <span style={{ fontSize:'.65rem', fontWeight:700, letterSpacing:'.18em', textTransform:'uppercase', padding:'.3rem .8rem', borderRadius:4, background:'var(--sr-blue)', color:'#fff', width:'fit-content', marginBottom:'1rem', display:'inline-flex' }}>{project.tag}</span>
-          <h1 style={{ fontFamily:"'Playfair Display',serif", fontSize:'clamp(1.8rem,4.5vw,3.2rem)', fontWeight:700, color:'#fff', maxWidth:700, margin:'1rem 0 0' }}>{project.title}</h1>
-          <div style={{ color:'rgba(255,255,255,.7)', marginTop:'.6rem', fontSize:'.95rem' }}>{project.client} · {project.year}</div>
+      <div style={{ position:'relative', height:'clamp(320px,40vw,480px)', overflow:'hidden' }}>
+        <img src={heroImg} alt={project.title} style={{ width:'100%', height:'100%', objectFit:'cover' }} />
+        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to bottom, rgba(8,15,36,.1) 0%, rgba(8,15,36,.9) 90%)' }} />
+        <div style={{ position:'absolute', inset:0, display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'var(--px) var(--px) 3rem' }}>
+          <span style={{ fontSize:'.65rem', fontWeight:700, letterSpacing:'.18em', textTransform:'uppercase', padding:'.3rem .8rem', borderRadius:4, background:'var(--sr-blue)', color:'#fff', width:'fit-content', marginBottom:'1rem' }}>{project.tag}</span>
+          <h1 style={{ fontFamily:"'Playfair Display',serif", fontSize:'clamp(1.8rem,4.5vw,3.2rem)', fontWeight:700, color:'#fff', maxWidth:700 }}>{project.title}</h1>
+          <div style={{ color:'rgba(255,255,255,.7)', marginTop:'.6rem', fontSize:'.9rem' }}>{project.client} · {project.year}</div>
         </div>
       </div>
 
-      {/* Quick stats bar */}
-      <div style={{ background:'var(--navy)', padding:'1.5rem var(--px)' }}>
-        <div style={{ maxWidth:1100, margin:'0 auto', display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(min(100%,200px),1fr))', gap:'1rem' }}>
-          {detail.stats.map(([label, val], i) => (
-            <Reveal key={label} delay={i * 60}>
-              <div style={{ textAlign:'center' }}>
-                <div style={{ fontFamily:"'Playfair Display',serif", fontSize:'1.05rem', fontWeight:700, color:'var(--gold-lt)' }}>{val}</div>
-                <div style={{ fontSize:'.62rem', fontWeight:700, letterSpacing:'.12em', textTransform:'uppercase', color:'rgba(255,255,255,.55)', marginTop:'.3rem' }}>{label}</div>
-              </div>
-            </Reveal>
-          ))}
+      {/* Quick stats bar — reuses next-project data below */}
+      <div style={{ background:'var(--navy)', padding:'2rem var(--px)' }}>
+        <div className="container">
+          <div className="pd-stats-bar">
+            {detail.stats.map(([label, val], i) => (
+              <Reveal key={label} delay={i * 60}>
+                <div className="pd-stat">
+                  <div className="pd-stat__val">{val}</div>
+                  <div className="pd-stat__label">{label}</div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+          <Reveal delay={260}>
+            <div className="pd-stats-next">
+              <Link to={`/projects/${nextSlug}`} className="btn btn--outline-white btn--sm">
+                Next Project — {nextProject.title} →
+              </Link>
+            </div>
+          </Reveal>
         </div>
       </div>
 
@@ -272,6 +312,31 @@ export default function ProjectDetail({ slug, onBack }) {
             "{detail.outcome}"
           </blockquote>
         </Reveal>
+      </section>
+
+      {/* Gallery — placeholder imagery until final site photography is provided */}
+      <section style={{ background:'var(--off-white)', padding:'var(--py) var(--px)', overflow:'hidden' }}>
+        <Reveal>
+          <div style={{ textAlign:'center', marginBottom:'2rem' }}>
+            <SectionLabel text="Project Gallery" />
+            <h2 style={{ marginTop:'.4rem' }}>On-site <em>documentation.</em></h2>
+            <p style={{ maxWidth:480, margin:'.6rem auto 0', fontSize:'.85rem', color:'var(--txt-muted)' }}>Placeholder imagery shown below — replace with final on-site photography when available.</p>
+          </div>
+        </Reveal>
+        <div style={{ display:'grid', gridTemplateColumns:'2fr 1fr', gridTemplateRows:'1fr 1fr', gap:'1rem', maxWidth:1000, margin:'0 auto', height:420 }}>
+          <Reveal style={{ gridRow:'1 / 3', height:'100%' }}>
+            <div style={{ height:'100%', borderRadius:'var(--radius)', overflow:'hidden', boxShadow:'var(--shadow-lg)' }}>
+              <img src={heroImg} alt={`${project.title} — primary view`} style={{ width:'100%', height:'100%', objectFit:'cover' }} />
+            </div>
+          </Reveal>
+          {gallerySeeds.map((seed, i) => (
+            <Reveal key={seed} delay={i * 80} style={{ height:'100%' }}>
+              <div style={{ height:'100%', borderRadius:'var(--radius)', overflow:'hidden', boxShadow:'var(--shadow-md)' }}>
+                <img src={`https://picsum.photos/seed/${seed}/700/500`} alt={`${project.title} — detail ${i + 1}`} style={{ width:'100%', height:'100%', objectFit:'cover' }} loading="lazy" />
+              </div>
+            </Reveal>
+          ))}
+        </div>
       </section>
 
       {/* CTA */}
