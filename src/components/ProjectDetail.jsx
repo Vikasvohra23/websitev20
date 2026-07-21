@@ -1,8 +1,10 @@
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { ALL_PROJECTS } from '../data/constants'
 import { Reveal, SectionLabel, BreadcrumbBar } from './Shared'
 import { useDocumentHead, SITE_URL } from '../hooks/useDocumentHead'
-import { slugifyProject } from './Projects'
+import { slugifyProject, projectBasePath } from './Projects'
+import { resolveProjectMedia } from '../utils/media'
 import NotFound from './NotFound'
 
 const CAT_IMAGES = {
@@ -11,23 +13,6 @@ const CAT_IMAGES = {
   industrial: '/images/Industrial%20Plant%20Support.jpg',
   luxury:     '/images/Luxury%20Train%20Interiors.jpg',
   events:     '/images/G20%20Summit%20Exhibition.jpg',
-}
-const PROJECT_IMAGES = {
-  'Presidential Museum':          '/Signature%20Projects/presidential%20museum.jpg',
-  'International Office Move':    '/Signature%20Projects/International%20Office%20Move.jpg',
-  'Maharaja Express Interiors':   '/Signature%20Projects/Maharaja%20Express%20Interiors.jpg',
-  '1 Lakh IT Asset Migration':    '/Signature%20Projects/1%20Lakh%20IT%20Asset%20Migration.jpg',
-  'Corporate Office Relocation':  '/Signature%20Projects/Corporate%20Office%20Relocation.jpg',
-  'G20 Summit Exhibition':        '/Signature%20Projects/G20%20Summit%20Exhibition.jpg',
-  'Shilp Guru Awards':            '/Signature%20Projects/Shilp%20Guru%20Awards.jpeg',
-  '13-Foot Production Line':      '/Signature%20Projects/13-Foot%20Production%20Line.jpg',
-  'Air Tank Vertical Erection':   '/Signature%20Projects/Air%20Tank%20Vertical%20Erection.jpg',
-  'Equipment Handling':           '/Signature%20Projects/Equipment%20Handling.jpeg',
-  'HVAC Equipment Move':          '/Signature%20Projects/HVAC%20Equipment%20Move.jpg',
-  'Automotive Plant Support':     '/Signature%20Projects/Automotive%20Plant%20Support.jpg',
-  'Hotel Furniture Relocation':   '/Signature%20Projects/Hotel%20Furniture%20Relocation.jpg',
-  'Industrial Plant Support':     '/Signature%20Projects/Industrial%20Plant%20Support.jpg',
-  'Luxury Train Interiors':       '/Signature%20Projects/Luxury%20Train%20Interiors.jpg',
 }
 
 // ─── Per-project case study content — researched, specific, non-generic ───
@@ -42,7 +27,7 @@ const PROJECT_DETAILS = {
       'Used soft-strap, multi-point lifting instead of rigid clamps on any surface with existing craquelure or gilding.',
       'Moved under continuous security escort with a locked chain-of-custody log signed at every handover point.',
     ],
-    stats: [['Handling Standard','Museum-Grade Conservation'], ['Packing','Individual Foam-Lined Crating'], ['Escort','Full Security Clearance'], ['Damage Incidents','Zero']],
+    stats: [['Handling Standard','Museum-Grade Conservation'], ['Packing','Individual Foam-Lined Crating'], ['Preservation','Climate-Controlled'], ['Damage Incidents','Zero']],
     outcome: 'Every object was received, catalogued and installed without a single condition-report discrepancy — the standard now used as the internal benchmark for all heritage-grade projects.',
   },
   'International Office Move': {
@@ -53,8 +38,8 @@ const PROJECT_DETAILS = {
       'Scheduled all data-infrastructure moves for weekend windows, with full connectivity testing before Monday handover.',
       'Maintained the same core crew across renewal years so institutional knowledge of the office layout carried forward.',
     ],
-    stats: [['Relationship Span','8+ Years'], ['Data-Loss Events','Zero'], ['Move Windows','Weekend-Only'], ['Handling','ESD-Safe IT Protocol']],
-    outcome: 'Eight consecutive years without a single operational disruption is the reason the relationship has continued this long — consistency, not a one-time performance.',
+    stats: [['Relationship Span','6+ Years'], ['Data-Loss Events','Zero'], ['Move Windows','Weekend-Only'], ['Handling','Safe IT Protocol']],
+    outcome: 'years without a single operational disruption is the reason the relationship has continued this long — consistency, not a one-time performance.',
   },
   'Maharaja Express Interiors': {
     challenge: 'India\'s premier luxury train carries bespoke cabinetry, hand-finished upholstery and heritage-styled fittings that must come off, get refreshed or relocated for seasonal maintenance, and go back into the exact same coach without visible wear from the process — repeated every season, not a one-off.',
@@ -213,13 +198,72 @@ const DEFAULT_DETAIL = {
   outcome: 'Delivered to the same documented standard applied across every Shree Radhey project, regardless of scale.',
 }
 
+function ProjectMediaSlider({ media, loading, fallbackImg, title }) {
+  const [idx, setIdx] = useState(0)
+  useEffect(() => { setIdx(0) }, [media])
+
+  const items = media.length ? media : (loading ? [] : [{ type: 'image', src: fallbackImg }])
+  if (loading) {
+    return (
+      <div style={{ maxWidth:900, height:480, margin:'0 auto', borderRadius:'var(--radius)', background:'var(--border-lt)', display:'flex', alignItems:'center', justifyContent:'center', color:'var(--txt-muted)', fontSize:'.85rem' }}>
+        Loading gallery…
+      </div>
+    )
+  }
+
+  const current = items[idx]
+  const go = (n) => setIdx(i => (i + n + items.length) % items.length)
+
+  return (
+    <div style={{ maxWidth:900, margin:'0 auto' }}>
+      <div style={{ position:'relative', height:480, borderRadius:'var(--radius)', overflow:'hidden', boxShadow:'var(--shadow-lg)', background:'#000' }}>
+        {current.type === 'video' ? (
+          <video key={current.src} src={current.src} controls playsInline style={{ width:'100%', height:'100%', objectFit:'contain', background:'#000' }} />
+        ) : (
+          <img key={current.src} src={current.src} alt={`${title} — media ${idx + 1}`} style={{ width:'100%', height:'100%', objectFit:'cover' }} />
+        )}
+        {items.length > 1 && (
+          <>
+            <button onClick={() => go(-1)} className="pd-slider-arrow pd-slider-arrow--prev" aria-label="Previous">←</button>
+            <button onClick={() => go(1)}  className="pd-slider-arrow pd-slider-arrow--next" aria-label="Next">→</button>
+          </>
+        )}
+      </div>
+      {items.length > 1 && (
+        <div style={{ display:'flex', justifyContent:'center', gap:6, marginTop:'1.2rem' }}>
+          {items.map((_, i) => (
+            <button key={i} onClick={() => setIdx(i)}
+              style={{ width: i === idx ? 28 : 8, height:8, borderRadius:4, border:'none', background: i === idx ? 'var(--sr-blue)' : 'var(--border-lt)', cursor:'pointer', transition:'all .3s', padding:0 }}
+              aria-label={`Go to slide ${i + 1}`} />
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
 export default function ProjectDetail({ slug, onBack }) {
   const project = ALL_PROJECTS.find(p => slugifyProject(p.title) === slug)
   if (!project) return <NotFound />
 
-  const heroImg = PROJECT_IMAGES[project.title] || CAT_IMAGES[project.category] || CAT_IMAGES.corporate
+  const fallbackImg = CAT_IMAGES[project.category] || CAT_IMAGES.corporate
+  const [media, setMedia] = useState([])          // [{type:'image'|'video', src}]
+  const [mediaLoading, setMediaLoading] = useState(true)
+
+  useEffect(() => {
+    let cancelled = false
+    setMediaLoading(true)
+    const base = projectBasePath(project.title)
+    if (!base) { setMedia([]); setMediaLoading(false); return }
+    resolveProjectMedia(base).then(items => {
+      if (!cancelled) { setMedia(items); setMediaLoading(false) }
+    })
+    return () => { cancelled = true }
+  }, [project.title])
+
+  const firstImage = media.find(m => m.type === 'image')
+  const heroImg = firstImage ? firstImage.src : fallbackImg
   const detail = PROJECT_DETAILS[project.title] || DEFAULT_DETAIL
-  const gallerySeeds = [`${slug}-a`, `${slug}-b`]
   const projectIdx = ALL_PROJECTS.findIndex(p => p.title === project.title)
   const nextProject = ALL_PROJECTS[(projectIdx + 1) % ALL_PROJECTS.length]
   const nextSlug = slugifyProject(nextProject.title)
@@ -314,29 +358,15 @@ export default function ProjectDetail({ slug, onBack }) {
         </Reveal>
       </section>
 
-      {/* Gallery — placeholder imagery until final site photography is provided */}
+      {/* Gallery — media slider, sourced live from this project's folder (images + video) */}
       <section style={{ background:'var(--off-white)', padding:'var(--py) var(--px)', overflow:'hidden' }}>
         <Reveal>
           <div style={{ textAlign:'center', marginBottom:'2rem' }}>
             <SectionLabel text="Project Gallery" />
             <h2 style={{ marginTop:'.4rem' }}>On-site <em>documentation.</em></h2>
-            <p style={{ maxWidth:480, margin:'.6rem auto 0', fontSize:'.85rem', color:'var(--txt-muted)' }}>Placeholder imagery shown below — replace with final on-site photography when available.</p>
           </div>
         </Reveal>
-        <div style={{ display:'grid', gridTemplateColumns:'2fr 1fr', gridTemplateRows:'1fr 1fr', gap:'1rem', maxWidth:1000, margin:'0 auto', height:420 }}>
-          <Reveal style={{ gridRow:'1 / 3', height:'100%' }}>
-            <div style={{ height:'100%', borderRadius:'var(--radius)', overflow:'hidden', boxShadow:'var(--shadow-lg)' }}>
-              <img src={heroImg} alt={`${project.title} — primary view`} style={{ width:'100%', height:'100%', objectFit:'cover' }} />
-            </div>
-          </Reveal>
-          {gallerySeeds.map((seed, i) => (
-            <Reveal key={seed} delay={i * 80} style={{ height:'100%' }}>
-              <div style={{ height:'100%', borderRadius:'var(--radius)', overflow:'hidden', boxShadow:'var(--shadow-md)' }}>
-                <img src={`https://picsum.photos/seed/${seed}/700/500`} alt={`${project.title} — detail ${i + 1}`} style={{ width:'100%', height:'100%', objectFit:'cover' }} loading="lazy" />
-              </div>
-            </Reveal>
-          ))}
-        </div>
+        <ProjectMediaSlider media={media} loading={mediaLoading} fallbackImg={fallbackImg} title={project.title} />
       </section>
 
       {/* CTA */}

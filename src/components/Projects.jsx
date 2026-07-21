@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { useState, useEffect, useRef } from 'react'
 import { ALL_PROJECTS, PROJECT_CATEGORIES } from '../data/constants'
 import { Reveal, SectionLabel } from './Shared'
+import { resolveProjectCover } from '../utils/media'
 
 export const slugifyProject = (title) => title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
 
@@ -13,28 +14,40 @@ const CAT_IMAGES = {
   events:     '/images/G20%20Summit%20Exhibition.jpg',
 }
 
-const PROJECT_IMAGES = {
-  'Presidential Museum':          '/Signature%20Projects/presidential%20museum.jpg',
-  'International Office Move':    '/Signature%20Projects/International%20Office%20Move.jpg',
-  'Maharaja Express Interiors':   '/Signature%20Projects/Maharaja%20Express%20Interiors.jpg',
-  '1 Lakh IT Asset Migration':    '/Signature%20Projects/1%20Lakh%20IT%20Asset%20Migration.jpg',
-  'Corporate Office Relocation':  '/Signature%20Projects/Corporate%20Office%20Relocation.jpg',
-  'G20 Summit Exhibition':        '/Signature%20Projects/G20%20Summit%20Exhibition.jpg',
-  'Shilp Guru Awards':            '/Signature%20Projects/Shilp%20Guru%20Awards.jpeg',
-  '13-Foot Production Line':      '/Signature%20Projects/13-Foot%20Production%20Line.jpg',
-  'Air Tank Vertical Erection':   '/Signature%20Projects/Air%20Tank%20Vertical%20Erection.jpg',
-  'Equipment Handling':           '/Signature%20Projects/Equipment%20Handling.jpeg',
-  'HVAC Equipment Move':          '/Signature%20Projects/HVAC%20Equipment%20Move.jpg',
-  'Automotive Plant Support':     '/Signature%20Projects/Automotive%20Plant%20Support.jpg',
-  'Hotel Furniture Relocation':   '/Signature%20Projects/Hotel%20Furniture%20Relocation.jpg',
-  'Industrial Plant Support':     '/Signature%20Projects/Industrial%20Plant%20Support.jpg',
-  'Luxury Train Interiors':       '/Signature%20Projects/Luxury%20Train%20Interiors.jpg',
+// Maps each project title to its actual folder name under /public
+// (exact spelling/casing as created — do not "correct" typos, they're real folder names on disk)
+export const PROJECT_FOLDERS = {
+  'Presidential Museum':          'Presidential Museum',
+  'International Office Move':    'International Office Move',
+  'Maharaja Express Interiors':   'Maharaja Express Interiors',
+  '1 Lakh IT Asset Migration':    '1 Lakh IT Assets',
+  'Corporate Office Relocation':  'Corporate Office Relocation',
+  'G20 Summit Exhibition':        'G20 Summit Exhibition',
+  'Shilp Guru Awards':            'Shilp Guru Awads',
+  '13-Foot Production Line':      '13-Foot Production Line',
+  'Air Tank Vertical Erection':   'Air Tank verticle Erection',
+  'Equipment Handling':           'Equipment Handling',
+  'HVAC Equipment Move':          'HVAC Equipment Move',
+  'Automotive Plant Support':     'Automotive plant Support',
+  'Hotel Furniture Relocation':   'Hotel Furniture Relocation',
+  'Industrial Plant Support':     'Industrial Plant Support',
+  'Luxury Train Interiors':       'Luxury Train Interior',
+}
+// n = 1, 2 or 3 — legacy direct-path helper, kept for any code still using it
+export const projectImg = (title, n = 1) => {
+  const folder = PROJECT_FOLDERS[title]
+  return folder ? `/${encodeURIComponent(folder)}/${n}.jpg` : null
+}
+// Base folder path (unencoded slashes, encoded spaces/special chars) used by the media prober
+export const projectBasePath = (title) => {
+  const folder = PROJECT_FOLDERS[title]
+  return folder ? `/${encodeURIComponent(folder)}` : null
 }
 
 const TESTIMONIALS = [
-  { quote:"Shree Radhey has been our trusted relocation partner for over 8 years. Their professionalism, attention to detail and ability to handle sensitive materials without damage makes them irreplaceable.", stars:5, attr:"WHO South-East Asia Office", role:"New Delhi Regional Office", initials:"WHO", color:"#0077B6" },
+  { quote:"Shree Radhey has been our trusted relocation partner for over 6 years. Their professionalism, attention to detail and ability to handle sensitive materials without damage makes them irreplaceable.", stars:5, attr:"WHO South-East Asia Office", role:"New Delhi Regional Office", initials:"WHO", color:"#0077B6" },
   { quote:"We entrusted them with irreplaceable presidential artifacts — sculptures, paintings and rare collectibles for the Presidential Museum. Their museum-grade handling exceeded every expectation.", stars:5, attr:"Rashtrapati Bhawan", role:"Art Secretariat, President's Office", initials:"RB", color:"#1B3A8C" },
-  { quote:"Over 1 lakh IT assets — laptops, servers, hubs and workstations — relocated to employees' homes during the pandemic. Zero losses. Complete professionalism throughout.", stars:5, attr:"WNS Global Services", role:"Corporate Client", initials:"WNS", color:"#2D6A4F" },
+  { quote:"Our IT assets — laptops, servers, hubs and workstations — relocated to employees' homes during the pandemic. Zero losses. Complete professionalism throughout.", stars:5, attr:"WNS Global Services", role:"Corporate Client", initials:"WNS", color:"#2D6A4F" },
   { quote:"Our annual Maharaja Express packing is handled by Shree Radhey with remarkable care for our heritage furniture and custom fittings. The same quality, year after year. Highly recommended.", stars:5, attr:"IRCTC — Maharaja Express", role:"India's Premier Luxury Train", initials:"IRT", color:"#6B2737" },
   { quote:"They handled our entire G20 exhibition logistics at Bharat Mandapam — setup, display packing and post-event dismantling — flawlessly. Time-critical, high-stakes, perfectly executed.", stars:5, attr:"CCIC / EPCH", role:"G20 Summit Exhibition, 2023", initials:"G20", color:"#b85a10" },
   { quote:"Machine shifting for our automotive plant required precision we didn't think was possible. Shree Radhey proved us wrong — zero misalignment, zero downtime.", stars:5, attr:"GKN Driveline India", role:"Automotive Manufacturer", initials:"GKN", color:"#1B3A8C" },
@@ -145,7 +158,18 @@ function TestimonialCarousel() {
 }
 
 function ProjectCard({ p }) {
-  const img = PROJECT_IMAGES[p.title] || CAT_IMAGES[p.category] || CAT_IMAGES.corporate
+  const fallback = CAT_IMAGES[p.category] || CAT_IMAGES.corporate
+  const [img, setImg] = useState(fallback)
+
+  useEffect(() => {
+    let cancelled = false
+    const base = projectBasePath(p.title)
+    if (base) {
+      resolveProjectCover(base).then(src => { if (!cancelled && src) setImg(src) })
+    }
+    return () => { cancelled = true }
+  }, [p.title])
+
   return (
     <Link to={`/projects/${slugifyProject(p.title)}`} className="project-card project-card--lift">
       <div className="project-card__img">
